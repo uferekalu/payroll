@@ -52,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-datepicker": "^4.19.3",
     "sass": "^1.69.5"
   }
 }

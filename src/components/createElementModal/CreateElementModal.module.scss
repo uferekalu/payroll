@@ -1,0 +1,682 @@
+@import '../../styles/variables.scss';
+
+.createElement {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &__body {
+    display: 'flex';
+    flex-direction: column;
+
+    @media (min-width: 560px) {
+      padding: 10px;
+    }
+  }
+
+  &__heading {
+    font-size: 12px;
+    color: $darkText;
+    font-weight: 600;
+  }
+
+  &__step__holder {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 30px;
+
+    &__imgone {
+      width: 100%;
+      height: auto;
+      max-width: 100vw;
+    }
+  }
+
+  &__info {
+    gap: 10px;
+    width: 100%;
+    margin-top: 20px;
+
+    @media (min-width: 560px) {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    @media (max-width: 560px) {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__sectionone {
+      display: flex;
+      flex-direction: column;
+
+      @media (min-width: 560px) {
+        display: flex;
+        justify-content: space-between;
+        width: 48%;
+      }
+
+      @media (max-width: 560px) {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      &__nameholder {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        &__name {
+          font-size: 12px;
+          color: $textColor;
+        }
+
+        &__input {
+          padding: 13px;
+          border-radius: $borderRadius;
+          font-size: 12px;
+          border: 1px solid $inputBorderColor;
+          margin-top: 8px;
+          &::placeholder {
+            color: $textColor;
+          }
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+
+      &__categoryholder {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 14px;
+
+        &__category {
+          font-size: 12px;
+          color: $textColor;
+        }
+
+        &__selectcategory {
+          padding: 11px;
+          border-radius: $borderRadius;
+          font-size: 12px;
+          border: 1px solid $inputBorderColor;
+          margin-top: 5px;
+          color: $textColor;
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+    }
+
+    &__sectiontwo {
+      display: flex;
+      flex-direction: column;
+
+      @media (min-width: 560px) {
+        display: flex;
+        justify-content: space-between;
+        width: 48%;
+      }
+
+      @media (max-width: 560px) {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      &__classificationholder {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        // margin-top: 14px;
+
+        &__classification {
+          font-size: 12px;
+          color: $textColor;
+        }
+
+        &__selectclassification {
+          padding: 11px;
+          border-radius: $borderRadius;
+          font-size: 12px;
+          border: 1px solid $inputBorderColor;
+          margin-top: 8px;
+          color: $textColor;
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+
+      &__payrunholder {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 14px;
+
+        &__payrun {
+          font-size: 12px;
+          color: $textColor;
+        }
+
+        &__selectpayrun {
+          padding: 11px;
+          border-radius: $borderRadius;
+          font-size: 12px;
+          border: 1px solid $inputBorderColor;
+          margin-top: 8px;
+          color: $textColor;
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+    }
+  }
+
+  &__description {
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+
+    &__text {
+      font-size: 12px;
+      color: $textColor;
+      margin-top: 12px;
+    }
+
+    &__textarea {
+      margin-top: 5px;
+      border: 1px solid $inputBorderColor;
+      padding: 8px;
+
+      &::placeholder {
+        font-size: 12px;
+        color: $textColor;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  &__reporting {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    border-radius: 4px;
+
+    &__text {
+      font-size: 12px;
+      color: $textColor;
+      margin-top: 12px;
+    }
+
+    &__textarea {
+      margin-top: 5px;
+      border: 1px solid $inputBorderColor;
+      padding: 8px;
+
+      &::placeholder {
+        font-size: 12px;
+        color: $textColor;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  &__btnaction {
+    display: flex;
+    margin-top: 20px;
+    width: 100%;
+
+    @media (min-width: 560px) {
+      justify-content: space-between;
+    }
+
+    @media (max-width: 560px) {
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    &__cancel {
+      border-radius: $borderRadius;
+      background: transparent;
+      border: 2px solid $green;
+      font-size: 12px;
+      color: $green;
+      font-weight: 500;
+
+      @media (min-width: 560px) {
+        width: 48%;
+        padding: 10px;
+      }
+
+      @media (max-width: 560px) {
+        width: 100%;
+        padding: 10px;
+      }
+    }
+
+    &__next {
+      border-radius: $borderRadius;
+      background: #93ccaf;
+      border: 2px solid $green;
+      font-size: 12px;
+      color: $light;
+      font-weight: 500;
+      border: none;
+
+      @media (min-width: 560px) {
+        width: 48%;
+        padding: 10px;
+      }
+
+      @media (max-width: 560px) {
+        width: 100%;
+        padding: 10px;
+      }
+    }
+  }
+
+  &__nextstep {
+    width: 100%;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+
+    &__datesection {
+      display: flex;
+
+      @media (min-width: 560px) {
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      @media (max-width: 560px) {
+        flex-direction: column;
+      }
+
+      &__startdateprocessing {
+        display: flex;
+        flex-direction: column;
+
+        @media (min-width: 560px) {
+          width: 48%;
+        }
+
+        @media (max-width: 560px) {
+          width: 100%;
+        }
+
+        &__date {
+          font-size: 12px;
+          color: $textColor;
+        }
+
+        &__selectdate {
+          font-size: 13px;
+          color: $textColor;
+          padding: 10px;
+          width: 100%;
+          border-radius: 5px;
+          border: 1px solid $inputBorderColor;
+          margin-top: 6px;
+
+          &:focus {
+            outline: none;
+          }
+        }
+
+        &__calendericon {
+          display: block;
+          position: relative;
+          z-index: 100;
+          width: 25px;
+          height: 25px;
+          margin-top: -35px;
+          margin-left: auto;
+          margin-right: 10px;
+        }
+
+        &__processing {
+          font-size: 12px;
+          color: $textColor;
+          margin-top: 20px;
+        }
+
+        &__openclose {
+          display: flex;
+          padding: 10px;
+          gap: 20px;
+          width: 100%;
+          border-radius: 5px;
+          border: 1px solid $inputBorderColor;
+          margin-top: 5px;
+
+          &__openholder {
+            display: flex;
+            gap: 7px;
+
+            &__text {
+              font-size: 13px;
+              color: $darkText;
+              font-weight: 500;
+              margin-top: 3px;
+            }
+          }
+
+          &__closeholder {
+            display: flex;
+            gap: 7px;
+
+            &__text {
+              font-size: 13px;
+              color: $darkText;
+              font-weight: 500;
+              margin-top: 3px;
+            }
+          }
+        }
+      }
+
+      &__enddatepayfrequency {
+        display: flex;
+        flex-direction: column;
+
+        @media (min-width: 560px) {
+          width: 48%;
+        }
+
+        @media (max-width: 560px) {
+          width: 100%;
+          margin-top: 15px;
+        }
+
+        &__date {
+          font-size: 12px;
+          color: $textColor;
+        }
+
+        &__selectdate {
+          font-size: 13px;
+          color: $textColor;
+          padding: 10px;
+          width: 100%;
+          border-radius: 5px;
+          border: 1px solid $inputBorderColor;
+          margin-top: 6px;
+
+          &:focus {
+            outline: none;
+          }
+        }
+
+        &__calendericon {
+          display: block;
+          position: relative;
+          z-index: 100;
+          width: 25px;
+          height: 25px;
+          margin-top: -35px;
+          margin-left: auto;
+          margin-right: 10px;
+        }
+
+        &__payfrequency {
+          font-size: 12px;
+          color: $textColor;
+          margin-top: 20px;
+        }
+
+        &__monthlyselectedmonths {
+          display: flex;
+          padding: 10px;
+          gap: 20px;
+          width: 100%;
+          border-radius: 5px;
+          border: 1px solid $inputBorderColor;
+          margin-top: 5px;
+
+          &__monthlyholder {
+            display: flex;
+            gap: 7px;
+
+            &__text {
+              font-size: 13px;
+              color: $darkText;
+              font-weight: 500;
+              margin-top: 3px;
+            }
+            &__radio {
+              font-size: 13px;
+              color: $darkText;
+              font-weight: 500;
+              margin-top: 3px;
+            }
+          }
+          &__selectedmonthsholder {
+            display: flex;
+            gap: 7px;
+
+            &__text {
+              font-size: 13px;
+              color: $darkText;
+              font-weight: 500;
+              margin-top: 3px;
+            }
+
+            &__radio {
+              font-size: 13px;
+              color: $darkText;
+              font-weight: 500;
+              margin-top: 3px;
+            }
+          }
+        }
+      }
+    }
+
+    &__selectedmonth__prorate {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      &__heading {
+        font-size: 12px;
+        color: $textColor;
+        margin-top: 20px;
+      }
+
+      &__resultholder {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        background: #e1e1e1;
+        border-radius: $borderRadius;
+        width: 100%;
+        height: 56px;
+        margin-top: 6px;
+
+        &__select {
+          width: 100%;
+          display: flex;
+          padding: 10px;
+          font-size: 12px;
+          background: transparent;
+          border: none;
+          color: #818da9;
+
+          &:focus {
+            outline: none;
+            border: none;
+          }
+        }
+
+        &__list {
+          display: flex;
+          flex-direction: row;
+          gap: 10px;
+          background: #e1e1e1;
+          z-index: 100;
+          margin-top: -18px;
+          margin-left: 3px;
+          width: 80%;
+
+          &__text {
+            display: flex;
+            font-size: 12px;
+            gap: 10px;
+            color: $textColor;
+
+            &__valueholder {
+              display: flex;
+              gap: 10px;
+              background: #e1e1e1;
+              padding: 5px;
+              margin-top: -8px;
+
+              &__val {
+                font-size: 12px;
+                color: $textColor;
+              }
+
+              &__remove {
+                font-size: 10px;
+                color: $darkText;
+                margin-top: 2px;
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &__prorate_statusholder {
+      display: flex;
+      width: 100%;
+      @media (min-width: 560px) {
+        justify-content: space-between;
+      }
+
+      @media (max-width: 560px) {
+        width: 100%;
+        flex-direction: column;
+      }
+
+      &__side1 {
+        display: flex;
+        flex-direction: column;
+
+        &__heading {
+          font-size: 12px;
+          color: $textColor;
+        }
+      }
+
+      &__yesno {
+        display: flex;
+        flex-direction: column;
+
+        &__holder {
+          display: flex;
+          gap: 10px;
+
+          &__radio {
+            font-size: 13px;
+            color: $darkText;
+            font-weight: 500;
+            margin-top: 3px;
+          }
+
+          &__yes {
+            font-size: 12px;
+            color: $textColor;
+          }
+        }
+      }
+    }
+
+    &__lastsection {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 10px;
+
+      &__part1 {
+        display: flex;
+        flex-direction: column;
+        width: 48%;
+
+        &__text {
+          font-size: 12px;
+          color: $textColor;
+        }
+      }
+
+      &__part2 {
+        display: flex;
+        flex-direction: column;
+        width: 48%;
+
+        &__text {
+          font-size: 12px;
+          color: $textColor;
+          margin-top: 5px;
+        }
+
+        &__status {
+          display: flex;
+          padding: 8px;
+          border: 1px solid $inputBorderColor;
+          border-radius: 5px;
+          margin-top: 2px;
+
+          &__activeicon__text {
+            margin-left: 7px;
+            color: $textColor;
+            font-size: 12px;
+          }
+        }
+      }
+    }
+
+    &__errors {
+      display: flex;
+      background: #fceeee;
+      padding: 9px;
+      border-radius: 4px;
+      font-size: 10px;
+      // font-style: italic;
+      color: red;
+      width: 100%;
+      margin-top: 5px;
+    }
+  }
+
+  &__errors {
+    display: flex;
+    background: #fceeee;
+    padding: 9px;
+    border-radius: 4px;
+    font-size: 10px;
+    // font-style: italic;
+    color: red;
+    width: 100%;
+    margin-top: 5px;
+  }
+}

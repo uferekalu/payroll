@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import classes from './NoElement.module.scss';
 import SearchBar from '../header/search/SearchBar';
 import filterBtn from '../../images/filterbtn.png';
@@ -9,6 +9,7 @@ import warning from '../../images/warning.png';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { allElements } from '../../slices/getElementsSlice';
 import { RootState } from '../../store';
+import { CreateElementStateContext } from '../CreateElementState';
 
 interface INoElement {}
 
@@ -16,6 +17,7 @@ const NoElement: React.FC<INoElement> = () => {
   // const [elements] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   const elements = useAppSelector((state: RootState) => state.allElements);
+  const createElementState = useContext(CreateElementStateContext)
 
   useEffect(() => {
     dispatch(allElements());
@@ -38,7 +40,7 @@ const NoElement: React.FC<INoElement> = () => {
           type="submit"
           btnText={`Create Element`}
           spanClassName={classes.noelement__searchbar__btnholder__text__span}
-          onClick={() => {}}
+          onClick={() => createElementState?.setCreateElement(true)}
           spanText={'+'}
         />
       </div>
