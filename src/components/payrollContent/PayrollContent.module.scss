@@ -1,0 +1,21 @@
+@import '../../styles/variables.scss';
+
+.payroll {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  background: transparent;
+  margin-top: 30px;
+  padding: 10px 0px 10px 20px;
+
+  &__title {
+    font-size: 12px;
+    color: $lightText;
+    margin-left: 35px;
+    cursor: pointer;
+  }
+
+  &__hl {
+    margin-top: 2px;
+  }
+}

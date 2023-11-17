@@ -1,0 +1,420 @@
+@import '../../styles//variables.scss';
+
+.sidebar {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  &__switch__module {
+    display: flex;
+    padding: 0px 20px;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      &__title1 {
+        font-size: 11px;
+        color: $darkText;
+      }
+      &__title2 {
+        font-size: 12px;
+        color: $darkText;
+        font-weight: bold;
+      }
+    }
+  }
+
+  &__dashboard {
+    display: flex;
+    padding: 0px 20px;
+    gap: 10px;
+    margin-left: 4px;
+    margin-top: 30px;
+
+    &__icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    &__title {
+      font-size: 12px;
+      color: $lightText;
+    }
+  }
+
+  &__payroll {
+    display: flex;
+    padding: 0px 20px;
+    justify-content: space-between;
+    cursor: pointer;
+    gap: 10px;
+    margin-left: 4px;
+    margin-top: 30px;
+    &:hover {
+      background: rgb(232, 243, 246);
+      padding: 10px;
+      width: 90%;
+      margin-left: 10px;
+      border-radius: $borderRadius;
+      transition: 0.3s ease all;
+    }
+
+    &__icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    &__title {
+      font-size: 12px;
+      color: $lightText;
+    }
+
+    &__highlight {
+      background: rgb(232, 243, 246);
+      padding: 6px;
+      width: 80%;
+      margin-left: 9px;
+      border-radius: $borderRadius;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    &__arrowdown__extra {
+      transform: rotate(-180deg);
+      transition: 0.3s ease all;
+    }
+  }
+
+  &__salary__structure {
+    display: flex;
+    padding: 0px 20px;
+    gap: 10px;
+    margin-left: 4px;
+    margin-top: 30px;
+
+    &__icon {
+      width: 19px;
+      height: 19px;
+    }
+
+    &__title {
+      font-size: 12px;
+      color: $lightText;
+    }
+  }
+
+  &__element {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: $green;
+    border-radius: $borderRadius;
+    margin-top: 30px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: 0.3s ease all;
+
+    &__title {
+      font-size: 12px;
+      color: $light;
+    }
+
+    &__arrow__extra {
+      transform: rotate(-180deg);
+      transition: 0.3s ease all;
+    }
+  }
+
+  &__employees {
+    display: flex;
+    padding: 0px 20px;
+    gap: 10px;
+    margin-left: 4px;
+    margin-top: 30px;
+
+    &__icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    &__title {
+      font-size: 12px;
+      color: $lightText;
+    }
+  }
+
+  &__hl {
+    margin-top: 30px;
+  }
+
+  &__payroll__settings {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+    gap: 10px;
+    margin-left: 4px;
+    margin-top: 30px;
+
+    &__icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    &__title {
+      font-size: 12px;
+      color: $lightText;
+    }
+  }
+
+  &__myaccount {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+    gap: 10px;
+    margin-left: 4px;
+    margin-top: 30px;
+
+    &__icon {
+      width: 17px;
+      height: 17px;
+    }
+
+    &__title {
+      font-size: 12px;
+      color: $lightText;
+    }
+  }
+  &__logout {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+    gap: 10px;
+    margin-left: 4px;
+    margin-top: 30px;
+
+    &__icon {
+      width: 17px;
+      height: 17px;
+    }
+
+    &__title {
+      font-size: 12px;
+      color: $lightText;
+    }
+  }
+}
+
+.mobileSidebar {
+  display: flex;
+  box-shadow: 0 0 10px rgba(132, 126, 126, 0.5);
+  border-radius: 6px;
+  box-sizing: border-box;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  width: 250px;
+  flex-direction: column;
+  &__switch__module {
+    display: flex;
+    padding: 0px 20px;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      &__title1 {
+        font-size: 11px;
+        color: $darkText;
+      }
+      &__title2 {
+        font-size: 12px;
+        color: $darkText;
+        font-weight: bold;
+      }
+    }
+  }
+
+  &__dashboard {
+    display: flex;
+    padding: 0px 20px;
+    gap: 10px;
+    margin-left: 4px;
+    margin-top: 30px;
+
+    &__icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    &__title {
+      font-size: 12px;
+      color: $lightText;
+    }
+  }
+
+  &__payroll {
+    display: flex;
+    padding: 0px 20px;
+    justify-content: space-between;
+    cursor: pointer;
+    gap: 10px;
+    margin-left: 4px;
+    margin-top: 30px;
+    &:hover {
+      background: rgb(232, 243, 246);
+      padding: 5px;
+      // width: %;
+      margin-left: 10px;
+      border-radius: $borderRadius;
+      transition: 0.3s ease all;
+    }
+
+    &__icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    &__title {
+      font-size: 12px;
+      color: $lightText;
+    }
+
+    &__highlight {
+      background: rgb(232, 243, 246);
+      padding: 6px;
+      width: 80%;
+      margin-left: 9px;
+      border-radius: $borderRadius;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    &__arrowdown__extra {
+      transform: rotate(-180deg);
+      transition: 0.3s ease all;
+    }
+  }
+
+  &__salary__structure {
+    display: flex;
+    padding: 0px 20px;
+    gap: 10px;
+    margin-left: 4px;
+    margin-top: 30px;
+
+    &__icon {
+      width: 19px;
+      height: 19px;
+    }
+
+    &__title {
+      font-size: 12px;
+      color: $lightText;
+    }
+  }
+
+  &__element {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: $green;
+    border-radius: $borderRadius;
+    margin-top: 30px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: 0.3s ease all;
+
+    &__title {
+      font-size: 12px;
+      color: $light;
+    }
+
+    &__arrow__extra {
+      transform: rotate(-180deg);
+      transition: 0.3s ease all;
+    }
+  }
+
+  &__employees {
+    display: flex;
+    padding: 0px 20px;
+    gap: 10px;
+    margin-left: 4px;
+    margin-top: 30px;
+
+    &__icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    &__title {
+      font-size: 12px;
+      color: $lightText;
+    }
+  }
+
+  &__hl {
+    margin-top: 30px;
+  }
+
+  &__payroll__settings {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+    gap: 10px;
+    margin-left: 4px;
+    margin-top: 30px;
+
+    &__icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    &__title {
+      font-size: 12px;
+      color: $lightText;
+    }
+  }
+
+  &__myaccount {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+    gap: 10px;
+    margin-left: 4px;
+    margin-top: 30px;
+
+    &__icon {
+      width: 17px;
+      height: 17px;
+    }
+
+    &__title {
+      font-size: 12px;
+      color: $lightText;
+    }
+  }
+  &__logout {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+    gap: 10px;
+    margin-left: 4px;
+    margin-top: 30px;
+
+    &__icon {
+      width: 17px;
+      height: 17px;
+    }
+
+    &__title {
+      font-size: 12px;
+      color: $lightText;
+    }
+  }
+}

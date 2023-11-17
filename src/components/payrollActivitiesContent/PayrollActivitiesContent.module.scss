@@ -1,0 +1,24 @@
+@import '../../styles/variables.scss';
+
+.payroll_activities {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 70%;
+  background: $bg;
+  border-radius: $borderRadius;
+  margin-top: 10px;
+  margin-left: 20px;
+  padding: 10px 0px 10px 20px;
+  // transition: transform 0.5s ease-in-out;
+
+  &__content {
+    font-size: 12px;
+    color: $lightText;
+    font-weight: 500;
+
+    &__extra {
+      transition: 0.3s ease all;
+    }
+  }
+}

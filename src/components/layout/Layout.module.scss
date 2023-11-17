@@ -1,0 +1,9 @@
+@import '../../styles/variables.scss';
+
+.container {
+  // height: calc(185vh - #{$headerHeight});
+  height: auto;
+  background: $bg;
+  display: flex;
+  width: 100%;
+}

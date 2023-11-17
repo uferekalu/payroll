@@ -1,0 +1,33 @@
+@import '../../styles/variables.scss';
+
+.breadcrum {
+  display: flex;
+  gap: 10px;
+
+  &__holder {
+    display: flex;
+    gap: 10px;
+    
+    &__link {
+      font-size: 10px;
+      color: $lightText;
+      text-decoration: none;
+    }
+
+    &__arrow {
+      width: 13px;
+      height: 13px;
+    }
+
+    @media (min-width: 450px) {
+      &__link {
+        font-size: 13px;
+      }
+
+      &__arrow {
+        width: 19px;
+      height: 19px;
+      }
+    }
+  }
+}

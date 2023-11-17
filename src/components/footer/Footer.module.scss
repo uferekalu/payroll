@@ -1,0 +1,25 @@
+@import '../../styles/variables.scss';
+
+.footer {
+  display: flex;
+  height: 58px;
+  background: $darkText;
+  justify-content: space-between;
+  padding: 10px 40px;
+
+  &__copyright {
+    display: flex;
+    margin-top: 6px;
+
+    &__text {
+      font-size: 10px;
+      color: $light;
+    }
+  }
+
+  &__email {
+    font-size: 10px;
+    color: $light;
+    margin-top: 6px;
+  }
+}
