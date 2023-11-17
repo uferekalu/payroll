@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import classes from './Sidebar.module.scss';
 import switchModule from '../../images/switch-module.png';
 import arrowDown from '../../images/arrowdown.png';
@@ -14,43 +14,17 @@ import logoutIcon from '../../images/logout.png';
 import PayrollContent from '../payrollContent/PayrollContent';
 import PayrollActivitiesContent from '../payrollActivitiesContent/PayrollActivitiesContent';
 import ElementSetupContent from '../elementSetupContent/ElementSetupContent';
+import { AppStateContext } from '../AppState';
 
-interface IMobileSidebar {
-  openSwitchModule: boolean;
-  setOpenSwitchModule: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedModule: string | null;
-  setSelectedModule: React.Dispatch<React.SetStateAction<string | null>>;
-  payrollActivities: boolean;
-  setPayrollActivities: React.Dispatch<React.SetStateAction<boolean>>;
-  elementSetup: boolean;
-  setElementSetup: React.Dispatch<React.SetStateAction<boolean>>;
-  toggleElementSetup: () => void;
-  togglePayrollActivities: () => void;
-  handleSelectedModule: (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ) => void;
-  handleOpenSwitchModule: () => void;
-}
+interface IMobileSidebar {}
 
-const MobileSidebar: React.FC<IMobileSidebar> = ({
-  openSwitchModule,
-  setOpenSwitchModule,
-  selectedModule,
-  setSelectedModule,
-  payrollActivities,
-  setPayrollActivities,
-  elementSetup,
-  setElementSetup,
-  toggleElementSetup,
-  togglePayrollActivities,
-  handleSelectedModule,
-  handleOpenSwitchModule,
-}) => {
+const MobileSidebar: React.FC<IMobileSidebar> = () => {
+  const appState = useContext(AppStateContext);
   return (
     <div className={classes.mobileSidebar}>
       <div
         className={classes.mobileSidebar__switch__module}
-        onClick={handleOpenSwitchModule}
+        onClick={appState?.handleOpenSwitchModule}
       >
         <img
           src={switchModule}
@@ -66,7 +40,7 @@ const MobileSidebar: React.FC<IMobileSidebar> = ({
           <span
             className={classes.mobileSidebar__switch__module__content__title2}
           >
-            {selectedModule}
+            {appState?.selectedModule}
           </span>
         </div>
         <img
@@ -75,10 +49,10 @@ const MobileSidebar: React.FC<IMobileSidebar> = ({
           className={classes.mobileSidebar__switch__module__img}
         />
       </div>
-      {openSwitchModule && (
+      {appState?.openSwitchModule && (
         <PayrollContent
-          handleSelectedModule={handleSelectedModule}
-          selectedModule={selectedModule}
+          handleSelectedModule={appState?.handleSelectedModule}
+          selectedModule={appState?.selectedModule}
         />
       )}
       <div className={classes.mobileSidebar__dashboard}>
@@ -93,11 +67,11 @@ const MobileSidebar: React.FC<IMobileSidebar> = ({
       </div>
       <div
         className={
-          payrollActivities
+          appState?.payrollActivities
             ? `${classes.mobileSidebar__payroll} ${classes.mobileSidebar__payroll__highlight}`
             : `${classes.mobileSidebar__payroll}`
         }
-        onClick={togglePayrollActivities}
+        onClick={appState?.togglePayrollActivities}
       >
         <img
           src={payrollIcon}
@@ -112,14 +86,16 @@ const MobileSidebar: React.FC<IMobileSidebar> = ({
           src={arrowDown}
           alt="arroe icon"
           className={
-            payrollActivities
+            appState?.payrollActivities
               ? `${classes.mobileSidebar__payroll__arrowdown} ${classes.mobileSidebar__payroll__arrowdown__extra}`
               : `${classes.mobileSidebar__payroll__arrowdown}`
           }
         />
       </div>
-      {payrollActivities && (
-        <PayrollActivitiesContent payrollActivities={payrollActivities} />
+      {appState?.payrollActivities && (
+        <PayrollActivitiesContent
+          payrollActivities={appState?.payrollActivities}
+        />
       )}
       <div className={classes.mobileSidebar__salary__structure}>
         <img
@@ -134,7 +110,7 @@ const MobileSidebar: React.FC<IMobileSidebar> = ({
       </div>
       <div
         className={classes.mobileSidebar__element}
-        onClick={toggleElementSetup}
+        onClick={appState?.toggleElementSetup}
       >
         <img
           src={elementIcon}
@@ -149,13 +125,13 @@ const MobileSidebar: React.FC<IMobileSidebar> = ({
           src={elementArrowDown}
           alt="arroe icon"
           className={
-            elementSetup
+            appState?.elementSetup
               ? `${classes.mobileSidebar__element__arrow} ${classes.mobileSidebar__element__arrow__extra}`
               : `${classes.mobileSidebar__element__arrow}`
           }
         />
       </div>
-      {elementSetup && <ElementSetupContent />}
+      {appState?.elementSetup && <ElementSetupContent />}
       <div className={classes.mobileSidebar__employees}>
         <img
           src={employeesIcon}

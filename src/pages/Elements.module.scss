@@ -1,0 +1,69 @@
+@import './../styles/variables.scss';
+
+.elements {
+  display: flex;
+  width: 100%;
+  height: auto;
+
+  &__sidebar {
+    width: 244px;
+    background: $light;
+    height: auto;
+    transition: 0.3s ease all;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+
+    @media (max-width: 750px) {
+      & {
+        display: none;
+      }
+    }
+  }
+
+  &__main {
+    width: calc(100vw - 244px);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 480px) {
+      margin-top: 30px;
+      margin-left: -40px;
+    }
+  }
+
+  @media (max-width: 750px) {
+    &__main {
+      width: 100vw;
+    }
+  }
+
+  &__showsidebar {
+    display: none;
+
+    @media (max-width: 750px) {
+      & {
+        display: block;
+        font-size: 30px;
+        color: $dark;
+      }
+    }
+  }
+}
+
+.mobileSidebar {
+  @media (min-width: 750px) {
+    & {
+      display: none;
+    }
+  }
+  display: block;
+  position: absolute;
+  top: 70;
+  right: 0;
+  z-index: 100;
+  background: $light;
+  // padding: 20px;
+}
