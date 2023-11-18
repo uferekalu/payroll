@@ -20,6 +20,8 @@ const secondStepValues = {
 };
 
 interface CreateElementStateContextType {
+  successModal: boolean;
+  setSuccessModal: React.Dispatch<React.SetStateAction<boolean>>;
   createElement: boolean;
   setCreateElement: React.Dispatch<React.SetStateAction<boolean>>;
   createElementSucces: boolean;
@@ -129,10 +131,11 @@ interface CreateElementProviderProps {
   children: React.ReactNode;
 }
 const CreateElementStateProvider: React.FC<CreateElementProviderProps> = ({
-  children,
+  children
 }) => {
   const [createElement, setCreateElement] = useState<boolean>(false);
   const [nextStep, setNextStep] = useState<boolean>(false);
+  const [successModal, setSuccessModal] = useState<boolean>(false);
   const [createElementSucces, setCreateElementSuccess] =
     useState<boolean>(false);
   const [stepOneFormData, setStepOneFormData] = useState<{
@@ -181,6 +184,8 @@ const CreateElementStateProvider: React.FC<CreateElementProviderProps> = ({
     useState<string>('');
   const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
   const [prorate, setProrate] = useState<string>('');
+
+  
   return (
     <CreateElementStateContext.Provider
       value={{
@@ -209,7 +214,9 @@ const CreateElementStateProvider: React.FC<CreateElementProviderProps> = ({
         prorate,
         setProrate,
         nextStep,
-        setNextStep
+        setNextStep,
+        successModal,
+        setSuccessModal,
       }}
     >
       {children}

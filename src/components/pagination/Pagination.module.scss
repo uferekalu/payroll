@@ -1,0 +1,40 @@
+@import '../../styles/variables.scss';
+
+.pagination {
+  display: flex;
+
+  @media (min-width: 560px) {
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  @media (max-width: 560px) {
+    flex-direction: column;
+    margin-top: 20px;
+    gap: 20px;
+  }
+
+  &__showing_container {
+    display: flex;
+    gap: 20px;
+
+    &__text {
+      font-size: 12px;
+      color: $dark;
+    }
+
+    &__size {
+      width: 70px;
+      padding: 2px;
+      border: none;
+      border-radius: $borderRadius;
+      background: #E2E2E2;
+      font-size: 12px;
+      margin-top: -3px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

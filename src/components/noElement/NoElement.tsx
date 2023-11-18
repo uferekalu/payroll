@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { allElements } from '../../slices/getElementsSlice';
 import { RootState } from '../../store';
 import { CreateElementStateContext } from '../CreateElementState';
+import ElementComp from '../elementComp/ElementComp';
 
 interface INoElement {}
 
@@ -17,7 +18,7 @@ const NoElement: React.FC<INoElement> = () => {
   // const [elements] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   const elements = useAppSelector((state: RootState) => state.allElements);
-  const createElementState = useContext(CreateElementStateContext)
+  const createElementState = useContext(CreateElementStateContext);
 
   useEffect(() => {
     dispatch(allElements());
@@ -45,25 +46,27 @@ const NoElement: React.FC<INoElement> = () => {
         />
       </div>
 
-      {/* <ElementComp /> */}
-
-      <div className={classes.noelement__warningContainer}>
-        <img
-          src={ellipse}
-          alt="ellipse"
-          className={classes.noelement__warningContainer__ellipse}
-        />
-        <div className={classes.noelement__warningContainer__holder}>
+      {elements.allElements ? (
+        <ElementComp />
+      ) : (
+        <div className={classes.noelement__warningContainer}>
           <img
-            src={warning}
-            alt="warning"
-            className={classes.noelement__warningContainer__warning}
+            src={ellipse}
+            alt="ellipse"
+            className={classes.noelement__warningContainer__ellipse}
           />
-          <span className={classes.noelement__warningContainer__holder__text}>
-            There are no elements to display
-          </span>
+          <div className={classes.noelement__warningContainer__holder}>
+            <img
+              src={warning}
+              alt="warning"
+              className={classes.noelement__warningContainer__warning}
+            />
+            <span className={classes.noelement__warningContainer__holder__text}>
+              There are no elements to display
+            </span>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

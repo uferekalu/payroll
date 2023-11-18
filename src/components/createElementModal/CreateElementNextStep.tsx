@@ -117,70 +117,76 @@ const CreateElementNextStep: React.FC<INextStep> = () => {
     setEndDatePickerOpen(!isEndDatePickerOpen);
   };
 
+  const handleCreateAlt = () => {
+    createElementState?.setSuccessModal(true);
+    createElementState?.setCreateElement(false);
+  }
+
   const handleCreateElement = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = {
-      data: {
-        name:
-          createElementState !== undefined
-            ? createElementState?.stepOneFormData.name
-            : '',
-        description:
-          createElementState !== undefined
-            ? createElementState?.stepOneFormData.description
-            : '',
-        payRunId: Number(createElementState?.stepOneFormData.payrun),
-        payRunValueId: Number(createElementState?.lookUpValueIds.payRunValueId),
-        classificationId: Number(
-          createElementState?.stepOneFormData.elementClassification,
-        ),
-        classificationValueId: Number(
-          createElementState?.lookUpValueIds.classificationValueId,
-        ),
-        categoryId: Number(createElementState?.stepOneFormData.elementCategory),
-        categoryValueId: Number(
-          createElementState?.lookUpValueIds.categoryValueId,
-        ),
-        reportingName:
-          createElementState !== undefined
-            ? createElementState?.stepOneFormData.reportingName
-            : '',
-        processingType:
-          createElementState !== undefined
-            ? createElementState?.processingType
-            : '',
-        status: createElementState?.stepTwoFormData.status
-          ? 'Active'
-          : 'Inactive',
-        prorate:
-          createElementState !== undefined ? createElementState?.prorate : '',
-        effectiveStartDate:
-          createElementState !== undefined
-            ? createElementState?.selectedStartDate &&
-              createElementState?.selectedStartDate?.toISOString()
-            : '',
-        effectiveEndDate:
-          createElementState !== undefined
-            ? createElementState?.selectedEndDate &&
-              createElementState?.selectedEndDate?.toISOString()
-            : '',
-        selectedMonths:
-          createElementState !== undefined
-            ? createElementState?.selectedMonths
-            : [],
-        payFrequency:
-          createElementState !== undefined
-            ? createElementState?.monthlySelectedMonths
-            : '',
-        modifiedBy: 'Kalu Ufere',
-      },
-    };
-    await dispatch(createElement(data));
+    createElementState?.setSuccessModal(true);
+    // const data = {
+    //   data: {
+    //     name:
+    //       createElementState !== undefined
+    //         ? createElementState?.stepOneFormData.name
+    //         : '',
+    //     description:
+    //       createElementState !== undefined
+    //         ? createElementState?.stepOneFormData.description
+    //         : '',
+    //     payRunId: Number(createElementState?.stepOneFormData.payrun),
+    //     payRunValueId: Number(createElementState?.lookUpValueIds.payRunValueId),
+    //     classificationId: Number(
+    //       createElementState?.stepOneFormData.elementClassification,
+    //     ),
+    //     classificationValueId: Number(
+    //       createElementState?.lookUpValueIds.classificationValueId,
+    //     ),
+    //     categoryId: Number(createElementState?.stepOneFormData.elementCategory),
+    //     categoryValueId: Number(
+    //       createElementState?.lookUpValueIds.categoryValueId,
+    //     ),
+    //     reportingName:
+    //       createElementState !== undefined
+    //         ? createElementState?.stepOneFormData.reportingName
+    //         : '',
+    //     processingType:
+    //       createElementState !== undefined
+    //         ? createElementState?.processingType
+    //         : '',
+    //     status: createElementState?.stepTwoFormData.status
+    //       ? 'Active'
+    //       : 'Inactive',
+    //     prorate:
+    //       createElementState !== undefined ? createElementState?.prorate : '',
+    //     effectiveStartDate:
+    //       createElementState !== undefined
+    //         ? createElementState?.selectedStartDate &&
+    //           createElementState?.selectedStartDate?.toISOString()
+    //         : '',
+    //     effectiveEndDate:
+    //       createElementState !== undefined
+    //         ? createElementState?.selectedEndDate &&
+    //           createElementState?.selectedEndDate?.toISOString()
+    //         : '',
+    //     selectedMonths:
+    //       createElementState !== undefined
+    //         ? createElementState?.selectedMonths
+    //         : [],
+    //     payFrequency:
+    //       createElementState !== undefined
+    //         ? createElementState?.monthlySelectedMonths
+    //         : '',
+    //     modifiedBy: 'Kalu Ufere',
+    //   },
+    // };
+    // await dispatch(createElement(data));
     createElementState?.setCreateElement(false);
   };
 
   return (
-    <form onSubmit={handleCreateElement}>
+    <>
       <div className={classes.createElement__nextstep}>
         <div className={classes.createElement__nextstep__datesection}>
           <div
@@ -641,12 +647,12 @@ const CreateElementNextStep: React.FC<INextStep> = () => {
           <Button
             type="submit"
             btnClassName={classes.createElement__btnaction__next}
-            onClick={() => {}}
+            onClick={() => handleCreateAlt()}
             btnText="Create New Element"
           />
         </div>
       </div>
-    </form>
+    </>
   );
 };
 
