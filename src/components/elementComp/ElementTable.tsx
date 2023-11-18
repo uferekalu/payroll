@@ -144,9 +144,11 @@ const data = [
   },
 ];
 
-interface IElementTb {}
+interface IElementTb {
+  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const ElementTable: React.FC<IElementTb> = () => {
+const ElementTable: React.FC<IElementTb> = ({ setIsEdit }) => {
   const createElementState = useContext(CreateElementStateContext);
   const imgRef = useRef<HTMLImageElement>(null);
   const naviagte = useNavigate();
@@ -185,7 +187,7 @@ const ElementTable: React.FC<IElementTb> = () => {
     return allData;
   }, [elements.allElements]);
 
-  console.log(elementsData);
+  // console.log(elementsData);
 
   useEffect(() => {
     dispatch(allElements());
@@ -332,6 +334,11 @@ const ElementTable: React.FC<IElementTb> = () => {
                                           ? () => naviagte('/element-links')
                                           : pop === 'Delete Element'
                                           ? () => setDeleteModal(true)
+                                          : pop === 'Edit Element'
+                                          ? () => {
+                                            setIsEdit(true)
+                                            createElementState?.setCreateElement(true)
+                                          }
                                           : undefined
                                       }
                                       key={idx}

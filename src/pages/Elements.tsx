@@ -12,13 +12,13 @@ import {
 import CreateElementModal from '../components/createElementModal/CreateElementModal';
 import SuccessModal from '../components/successModl/SuccessModal';
 import check from '../images/check.png';
-// import check from '../images/check.png';
 
 interface IElement {}
 
 const Elements: React.FC<IElement> = () => {
   const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false);
   const createElementState = useContext(CreateElementStateContext);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
   const toggleMobileShowSidebar = () => {
     setShowMobileSidebar((prevState) => !prevState);
   };
@@ -54,9 +54,9 @@ const Elements: React.FC<IElement> = () => {
           </div>
           <div className={classes.elements__main}>
             <Breadcrumb />
-            <NoElement />
+            <NoElement setIsEdit={setIsEdit} />
           </div>
-          <CreateElementModal />
+          <CreateElementModal isEdit={isEdit} />
         </div>
         <SuccessModal
           imgSrc={check}

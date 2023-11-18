@@ -12,9 +12,11 @@ import { RootState } from '../../store';
 import { CreateElementStateContext } from '../CreateElementState';
 import ElementComp from '../elementComp/ElementComp';
 
-interface INoElement {}
+interface INoElement {
+  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const NoElement: React.FC<INoElement> = () => {
+const NoElement: React.FC<INoElement> = ({ setIsEdit }) => {
   // const [elements] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   const elements = useAppSelector((state: RootState) => state.allElements);
@@ -41,13 +43,16 @@ const NoElement: React.FC<INoElement> = () => {
           type="submit"
           btnText={`Create Element`}
           spanClassName={classes.noelement__searchbar__btnholder__text__span}
-          onClick={() => createElementState?.setCreateElement(true)}
+          onClick={() => {
+            createElementState?.setCreateElement(true)
+            setIsEdit(false)
+          }}
           spanText={'+'}
         />
       </div>
 
       {elements.allElements ? (
-        <ElementComp />
+        <ElementComp setIsEdit={setIsEdit} />
       ) : (
         <div className={classes.noelement__warningContainer}>
           <img

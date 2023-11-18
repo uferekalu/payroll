@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import classes from './CreateElementLinksModal.module.scss';
 import Select from '../select/Select';
 import DatePicker from 'react-datepicker';
@@ -6,6 +6,7 @@ import calenderIcon from '../../images/calenderIcon.png';
 import toggleBtn from '../../images/toggle-button.png';
 import Input from '../input/Input';
 import Button from '../button/Button';
+import { CreateElementStateContext } from '../CreateElementState';
 
 interface ICreateElementLinkThird {
   setThirdStep: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,6 +29,7 @@ const CreateElementModalThirdStep: React.FC<ICreateElementLinkThird> = ({
     useState<boolean>(false);
 
   const [automate, setAutomate] = useState<string>('');
+  const createElementState = useContext(CreateElementStateContext);
 
   const backToSecondStep = () => {
     setThirdStep(false);
@@ -46,7 +48,7 @@ const CreateElementModalThirdStep: React.FC<ICreateElementLinkThird> = ({
   };
 
   const handleSubmit = () => {
-    setOpenSuccessModal(true);
+    createElementState?.setSuccessModal(true);
     setCreateElementLink(false);
   };
   return (

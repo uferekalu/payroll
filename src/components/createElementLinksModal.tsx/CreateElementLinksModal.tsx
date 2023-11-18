@@ -14,12 +14,14 @@ interface ICreateElementLinks {
   createElementLink: boolean;
   setCreateElementLink: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenSuccessModal: React.Dispatch<React.SetStateAction<boolean>>;
+  editElementLinks: boolean;
 }
 
 const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
   createElementLink,
   setCreateElementLink,
-  setOpenSuccessModal
+  setOpenSuccessModal,
+  editElementLinks,
 }) => {
   const [secondStep, setSecondStep] = useState<boolean>(false);
   const [thirdStep, setThirdStep] = useState<boolean>(false);
@@ -33,8 +35,8 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
   };
 
   const handleCancel = () => {
-    setCreateElementLink(false)
-  }
+    setCreateElementLink(false);
+  };
   return (
     <GeneralModal
       size="lg"
@@ -46,7 +48,11 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
     >
       <Modal.Body className={classes.createElementLink__body}>
         <h3 className={classes.createElementLink__heading}>
-          Create Element Link
+          {editElementLinks
+            ? 'Edit Element Link'
+            : createElementLink
+            ? 'Create Element Link'
+            : undefined}
         </h3>
         <div className={classes.createElementLink__step__holder}>
           {thirdStep ? (

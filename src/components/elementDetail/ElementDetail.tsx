@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classes from './ElementDetail.module.scss';
 import arrowLeft from '../../images/arrowleft.png';
@@ -11,17 +11,17 @@ import ellipse from '../../images/element-ellipse.png';
 import warning from '../../images/warning.png';
 import CreateElementLinksModal from '../createElementLinksModal.tsx/CreateElementLinksModal';
 import SuccessModal from '../successModl/SuccessModal';
+import { CreateElementStateContext } from '../CreateElementState';
+import ElementLinksTable from '../elementComp/ElementLinksTable';
 
 interface IElementDetail {}
 
 const ElementDetail: React.FC<IElementDetail> = () => {
   const navigate = useNavigate();
   const [createElementLink, setCreateElementLink] = useState<boolean>(false);
-  const [openSuccessModal, setOpenSuccessModal] = useState<boolean>(false);
-
-  const closeSuccessModal = () => {
-    setOpenSuccessModal(false);
-  };
+  const createElementState = useContext(CreateElementStateContext);
+  const [elementLinksDetail] = useState(true);
+  const [editElementLinks, setIsEditElementLinks] = useState<boolean>(false)
 
   return (
     <>
@@ -203,41 +203,57 @@ const ElementDetail: React.FC<IElementDetail> = () => {
             spanClassName={
               classes.elementDetail__searchbar__btnholder__text__span
             }
-            onClick={() => setCreateElementLink(true)}
+            onClick={() =>{
+              setCreateElementLink(true)
+              setIsEditElementLinks(false)
+            }}
             spanText={'+'}
           />
         </div>
-        <div className={classes.elementDetail__warningContainer}>
-          <img
-            src={ellipse}
-            alt="ellipse"
-            className={classes.elementDetail__warningContainer__ellipse}
+        {elementLinksDetail ? (
+          <ElementLinksTable
+            createElementLink={createElementLink}
+            setCreateElementLink={setCreateElementLink}
+            setIsEditElementLinks={setIsEditElementLinks}
           />
-          <div className={classes.elementDetail__warningContainer__holder}>
+        ) : (
+          <div className={classes.elementDetail__warningContainer}>
             <img
-              src={warning}
-              alt="warning"
-              className={classes.elementDetail__warningContainer__warning}
+              src={ellipse}
+              alt="ellipse"
+              className={classes.elementDetail__warningContainer__ellipse}
             />
-            <span
-              className={classes.elementDetail__warningContainer__holder__text}
-            >
-              There are no element links to display
-            </span>
+            <div className={classes.elementDetail__warningContainer__holder}>
+              <img
+                src={warning}
+                alt="warning"
+                className={classes.elementDetail__warningContainer__warning}
+              />
+              <span
+                className={
+                  classes.elementDetail__warningContainer__holder__text
+                }
+              >
+                There are no element links to display
+              </span>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <CreateElementLinksModal
         createElementLink={createElementLink}
         setCreateElementLink={setCreateElementLink}
-        setOpenSuccessModal={setOpenSuccessModal}
+        setOpenSuccessModal={
+          createElementState?.setCreateElementSuccess || (() => {})
+        }
+        editElementLinks={editElementLinks}
       />
       <SuccessModal
         imgSrc={check}
         alt={'success'}
         successMsg={`Element Link has been created successfully`}
         btnText={'Close to continue'}
-        onClick={() => closeSuccessModal()}
+        onClick={() => createElementState?.setSuccessModal(false)}
       />
     </>
   );

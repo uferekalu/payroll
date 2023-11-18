@@ -1,14 +1,16 @@
 import React from 'react';
 import './ElementComp.module.scss';
 import ElementTable from './ElementTable';
-import classes from './ElementComp.module.scss'
+import classes from './ElementComp.module.scss';
 
-interface IElementComp {}
+interface IElementComp {
+  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const ElementComp: React.FC<IElementComp> = () => {
+const ElementComp: React.FC<IElementComp> = ({ setIsEdit }) => {
   return (
     <div className={classes.elementcomp}>
-      <ElementTable />
+      <ElementTable setIsEdit={setIsEdit} />
     </div>
   );
 };

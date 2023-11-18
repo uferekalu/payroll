@@ -13,9 +13,11 @@ import { LookupValueObject } from '../../utils/interface';
 import { baseUrl } from '../../slices/api';
 import { CreateElementStateContext } from '../CreateElementState';
 
-interface ICreateElement {}
+interface ICreateElement {
+  isEdit: boolean;
+}
 
-const CreateElementModal: React.FC<ICreateElement> = () => {
+const CreateElementModal: React.FC<ICreateElement> = ({ isEdit }) => {
   const createElementState = useContext(CreateElementStateContext);
   const [elementCategories, setElementCategories] = useState<
     LookupValueObject[]
@@ -215,7 +217,9 @@ const CreateElementModal: React.FC<ICreateElement> = () => {
       className={classes.createElement}
     >
       <Modal.Body className={classes.createElement__body}>
-        <h3 className={classes.createElement__heading}>Create Element</h3>
+        <h3 className={classes.createElement__heading}>
+          {isEdit ? 'Edit Element' : 'Create Element'}
+        </h3>
         <div className={classes.createElement__step__holder}>
           {createElementState?.nextStep ? (
             <img
