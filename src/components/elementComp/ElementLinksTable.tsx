@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Pagination from '../pagination/Pagination';
 import sortIcon from '../../images/sort.png';
 import editIcon from '../../images/edit.png';
@@ -6,6 +6,8 @@ import deleteIcon from '../../images/delete.png';
 import deleteIcon2 from '../../images/deleteicon.png';
 import { Table } from 'react-bootstrap';
 import DeleteModalComp from '../deleteModalComp/DeleteModalComp';
+import { CreateElementStateContext } from '../CreateElementState';
+import ElementLinksDetails from '../elementDetail/ElemeentLinksDetail';
 
 interface IElementsLink {
   createElementLink: boolean;
@@ -119,6 +121,7 @@ const ElementLinksTable: React.FC<IElementsLink> = ({
   setCreateElementLink,
   setIsEditElementLinks,
 }) => {
+  const createElementState = useContext(CreateElementStateContext);
   const [outOfRange, setOutOfRange] = useState<boolean>(false);
   const [noOfItems, setNoOfItems] = useState<number>(5);
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -242,6 +245,9 @@ const ElementLinksTable: React.FC<IElementsLink> = ({
                       {dt.date}
                     </td>
                     <td
+                      onClick={() =>
+                        createElementState?.setIsCustomModalOpen(true)
+                      }
                       style={{
                         fontSize: '11px',
                         textDecoration: 'underline',
@@ -295,6 +301,7 @@ const ElementLinksTable: React.FC<IElementsLink> = ({
         btnText1="Cancel"
         btnText2="Yes, Delete"
       />
+      <ElementLinksDetails />
     </>
   );
 };

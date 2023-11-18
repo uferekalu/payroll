@@ -20,6 +20,10 @@ const secondStepValues = {
 };
 
 interface CreateElementStateContextType {
+  isCustomModalOpen: boolean;
+  setIsCustomModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  createElementLinksDetail: boolean;
+  setCreateElementLinkDetail: React.Dispatch<React.SetStateAction<boolean>>;
   successModal: boolean;
   setSuccessModal: React.Dispatch<React.SetStateAction<boolean>>;
   createElement: boolean;
@@ -131,11 +135,14 @@ interface CreateElementProviderProps {
   children: React.ReactNode;
 }
 const CreateElementStateProvider: React.FC<CreateElementProviderProps> = ({
-  children
+  children,
 }) => {
   const [createElement, setCreateElement] = useState<boolean>(false);
+  const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
   const [nextStep, setNextStep] = useState<boolean>(false);
   const [successModal, setSuccessModal] = useState<boolean>(false);
+  const [createElementLinksDetail, setCreateElementLinkDetail] =
+    useState<boolean>(false);
   const [createElementSucces, setCreateElementSuccess] =
     useState<boolean>(false);
   const [stepOneFormData, setStepOneFormData] = useState<{
@@ -185,7 +192,6 @@ const CreateElementStateProvider: React.FC<CreateElementProviderProps> = ({
   const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
   const [prorate, setProrate] = useState<string>('');
 
-  
   return (
     <CreateElementStateContext.Provider
       value={{
@@ -217,6 +223,10 @@ const CreateElementStateProvider: React.FC<CreateElementProviderProps> = ({
         setNextStep,
         successModal,
         setSuccessModal,
+        createElementLinksDetail,
+        setCreateElementLinkDetail,
+        isCustomModalOpen,
+        setIsCustomModalOpen,
       }}
     >
       {children}
