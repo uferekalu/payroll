@@ -34,9 +34,15 @@ const headerData = [
 
 interface IElementTb {
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  editId: number | null;
+  setEditId: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-const ElementTable: React.FC<IElementTb> = ({ setIsEdit }) => {
+const ElementTable: React.FC<IElementTb> = ({
+  setIsEdit,
+  editId,
+  setEditId,
+}) => {
   const createElementState = useContext(CreateElementStateContext);
   const imgRef = useRef<HTMLImageElement>(null);
   const naviagte = useNavigate();
@@ -123,9 +129,9 @@ const ElementTable: React.FC<IElementTb> = ({ setIsEdit }) => {
   };
 
   const handleCancelDelete = () => {
-    setDeleteId(null)
-    setDeleteModal(false)
-  }
+    setDeleteId(null);
+    setDeleteModal(false);
+  };
 
   return (
     <>
@@ -267,6 +273,7 @@ const ElementTable: React.FC<IElementTb> = ({ setIsEdit }) => {
                                             }
                                           : pop === 'Edit Element'
                                           ? () => {
+                                              setEditId(dt.id);
                                               setIsEdit(true);
                                               createElementState?.setCreateElement(
                                                 true,

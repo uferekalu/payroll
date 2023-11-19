@@ -19,6 +19,7 @@ const Elements: React.FC<IElement> = () => {
   const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false);
   const createElementState = useContext(CreateElementStateContext);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [editId, setEditId] = useState<number | null>(null);
   const [createElementSucces, setCreateElementSuccess] =
     useState<boolean>(false);
   const toggleMobileShowSidebar = () => {
@@ -58,11 +59,17 @@ const Elements: React.FC<IElement> = () => {
           </div>
           <div className={classes.elements__main}>
             <Breadcrumb />
-            <NoElement setIsEdit={setIsEdit} />
+            <NoElement
+              setIsEdit={setIsEdit}
+              editId={editId}
+              setEditId={setEditId}
+            />
           </div>
           <CreateElementModal
             setCreateElementSuccess={setCreateElementSuccess}
             isEdit={isEdit}
+            editId={editId}
+            setEditId={setEditId}
           />
         </div>
         <SuccessModal

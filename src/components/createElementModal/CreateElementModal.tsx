@@ -12,15 +12,23 @@ import axios from 'axios';
 import { LookupValueObject } from '../../utils/interface';
 import { baseUrl } from '../../slices/api';
 import { CreateElementStateContext } from '../CreateElementState';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getAnElement } from '../../slices/getAnElementSlice';
+import { RootState } from '../../store';
+import UpdateElementModal from './UpdateElementModal';
 
 interface ICreateElement {
   isEdit: boolean;
   setCreateElementSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  editId: number | null;
+  setEditId: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 const CreateElementModal: React.FC<ICreateElement> = ({
   isEdit,
   setCreateElementSuccess,
+  editId,
+  setEditId,
 }) => {
   const createElementState = useContext(CreateElementStateContext);
   const [elementCategories, setElementCategories] = useState<
@@ -30,6 +38,14 @@ const CreateElementModal: React.FC<ICreateElement> = ({
     LookupValueObject[]
   >([]);
   const [payRuns, setPayruns] = useState<LookupValueObject[]>([]);
+  const dispatch = useAppDispatch();
+  const elementDet = useAppSelector((state: RootState) => state.getAnElement);
+
+  useEffect(() => {
+    if (editId !== null) {
+      dispatch(getAnElement(Number(editId)));
+    }
+  }, [dispatch, editId]);
 
   const handleChange = (
     e:
@@ -98,7 +114,7 @@ const CreateElementModal: React.FC<ICreateElement> = ({
     };
     handleCategories();
   }, []);
-  
+
   useEffect(() => {
     const handleClassifications = async () => {
       const data = await axios.get(`${baseUrl}/lookups/2/lookupvalues`);
@@ -106,7 +122,7 @@ const CreateElementModal: React.FC<ICreateElement> = ({
     };
     handleClassifications();
   }, []);
- 
+
   useEffect(() => {
     const handlePayruns = async () => {
       const data = await axios.get(`${baseUrl}/lookups/5/lookupvalues`);
@@ -116,6 +132,7 @@ const CreateElementModal: React.FC<ICreateElement> = ({
   }, []);
 
   const handleCancelCreateElement = () => {
+    setEditId(null);
     createElementState?.setCreateElement(false);
     createElementState?.setStepOneFormData({
       name: '',
@@ -243,188 +260,204 @@ const CreateElementModal: React.FC<ICreateElement> = ({
         {createElementState?.nextStep ? (
           <CreateElementNextStep
             setCreateElementSuccess={setCreateElementSuccess}
+            editId={editId}
           />
         ) : (
           <>
-            <div className={classes.createElement__info}>
-              <div className={classes.createElement__info__sectionone}>
-                <div
-                  className={
-                    classes.createElement__info__sectionone__nameholder
-                  }
-                >
-                  <span
-                    className={
-                      classes.createElement__info__sectionone__nameholder__name
-                    }
-                  >
-                    Name
+            {editId ? (
+              <UpdateElementModal
+                elementCategories={elementCategories}
+                elementClassifications={elementClassifications}
+                payRuns={payRuns}
+                elementDet={elementDet.element}
+                elementCategoriesData={elementCategoriesData}
+              />
+            ) : (
+              <>
+                <div className={classes.createElement__info}>
+                  <div className={classes.createElement__info__sectionone}>
+                    <div
+                      className={
+                        classes.createElement__info__sectionone__nameholder
+                      }
+                    >
+                      <span
+                        className={
+                          classes.createElement__info__sectionone__nameholder__name
+                        }
+                      >
+                        Name
+                      </span>
+                      <Input
+                        type="text"
+                        classname={
+                          classes.createElement__info__sectionone__nameholder__input
+                        }
+                        placeholder="Input Name"
+                        name="name"
+                        value={createElementState?.stepOneFormData.name}
+                        onChange={handleChange}
+                      />
+                      {createElementState?.errors.name && (
+                        <span className={classes.createElement__errors}>
+                          {createElementState?.errors.name}
+                        </span>
+                      )}
+                    </div>
+                    <div
+                      className={
+                        classes.createElement__info__sectionone__categoryholder
+                      }
+                    >
+                      <span
+                        className={
+                          classes.createElement__info__sectionone__categoryholder__category
+                        }
+                      >
+                        Element Category
+                      </span>
+                      <select
+                        className={
+                          classes.createElement__info__sectionone__categoryholder__selectcategory
+                        }
+                        name="elementCategory"
+                        value={
+                          createElementState?.stepOneFormData.elementCategory
+                        }
+                        onChange={handleChange}
+                      >
+                        <option>Select Element Category</option>
+                        {elementCategoriesData.map((data) => (
+                          <option key={data.id} value={data.id}>
+                            {data.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    {createElementState?.errors.elementCategory && (
+                      <div className={classes.createElement__errors}>
+                        {createElementState?.errors.elementCategory}
+                      </div>
+                    )}
+                  </div>
+                  <div className={classes.createElement__info__sectiontwo}>
+                    <div
+                      className={
+                        classes.createElement__info__sectiontwo__classificationholder
+                      }
+                    >
+                      <span
+                        className={
+                          classes.createElement__info__sectiontwo__classificationholder__classification
+                        }
+                      >
+                        Element Classification
+                      </span>
+                      <select
+                        className={
+                          classes.createElement__info__sectiontwo__classificationholder__selectclassification
+                        }
+                        name="elementClassification"
+                        value={
+                          createElementState?.stepOneFormData
+                            .elementClassification
+                        }
+                        onChange={handleChange}
+                      >
+                        <option>Select Classification</option>
+                        {elementClassifications.map((data) => (
+                          <option key={data.id} value={data.id}>
+                            {data.name}
+                          </option>
+                        ))}
+                      </select>
+                      {createElementState?.errors.elementClassification && (
+                        <div className={classes.createElement__errors}>
+                          {createElementState?.errors.elementClassification}
+                        </div>
+                      )}
+                    </div>
+                    <div
+                      className={
+                        classes.createElement__info__sectiontwo__payrunholder
+                      }
+                    >
+                      <span
+                        className={
+                          classes.createElement__info__sectiontwo__payrunholder__payrun
+                        }
+                      >
+                        Payrun
+                      </span>
+                      <select
+                        className={
+                          classes.createElement__info__sectiontwo__payrunholder__selectpayrun
+                        }
+                        name="payrun"
+                        value={createElementState?.stepOneFormData.payrun}
+                        onChange={handleChange}
+                      >
+                        <option>Select Payrun</option>
+                        {payRuns.map((data) => (
+                          <option key={data.id} value={data.id}>
+                            {data.name}
+                          </option>
+                        ))}
+                      </select>
+                      {createElementState?.errors.payrun && (
+                        <div className={classes.createElement__errors}>
+                          {createElementState?.errors.payrun}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className={classes.createElement__description}>
+                  <span className={classes.createElement__description__text}>
+                    Description
                   </span>
-                  <Input
-                    type="text"
-                    classname={
-                      classes.createElement__info__sectionone__nameholder__input
+                  <Textarea
+                    classname={classes.createElement__description__textarea}
+                    rows={2}
+                    placeholder="Input Description"
+                    name="description"
+                    value={
+                      createElementState !== undefined
+                        ? createElementState?.stepOneFormData.description
+                        : ''
                     }
-                    placeholder="Input Name"
-                    name="name"
-                    value={createElementState?.stepOneFormData.name}
                     onChange={handleChange}
                   />
-                  {createElementState?.errors.name && (
-                    <span className={classes.createElement__errors}>
-                      {createElementState?.errors.name}
-                    </span>
+                  {createElementState?.errors.description && (
+                    <div className={classes.createElement__errors}>
+                      {createElementState?.errors.description}
+                    </div>
                   )}
                 </div>
-                <div
-                  className={
-                    classes.createElement__info__sectionone__categoryholder
-                  }
-                >
-                  <span
-                    className={
-                      classes.createElement__info__sectionone__categoryholder__category
-                    }
-                  >
-                    Element Category
+                <div className={classes.createElement__reporting}>
+                  <span className={classes.createElement__reporting__text}>
+                    Reporting Name
                   </span>
-                  <select
-                    className={
-                      classes.createElement__info__sectionone__categoryholder__selectcategory
-                    }
-                    name="elementCategory"
-                    value={createElementState?.stepOneFormData.elementCategory}
-                    onChange={handleChange}
-                  >
-                    <option>Select Element Category</option>
-                    {elementCategoriesData.map((data) => (
-                      <option key={data.id} value={data.id}>
-                        {data.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                {createElementState?.errors.elementCategory && (
-                  <div className={classes.createElement__errors}>
-                    {createElementState?.errors.elementCategory}
-                  </div>
-                )}
-              </div>
-              <div className={classes.createElement__info__sectiontwo}>
-                <div
-                  className={
-                    classes.createElement__info__sectiontwo__classificationholder
-                  }
-                >
-                  <span
-                    className={
-                      classes.createElement__info__sectiontwo__classificationholder__classification
-                    }
-                  >
-                    Element Classification
-                  </span>
-                  <select
-                    className={
-                      classes.createElement__info__sectiontwo__classificationholder__selectclassification
-                    }
-                    name="elementClassification"
+                  <Textarea
+                    classname={classes.createElement__reporting__textarea}
+                    rows={2}
+                    placeholder="Input Reporting Name"
+                    name="reportingName"
                     value={
-                      createElementState?.stepOneFormData.elementClassification
+                      createElementState !== undefined
+                        ? createElementState?.stepOneFormData.reportingName
+                        : ''
                     }
                     onChange={handleChange}
-                  >
-                    <option>Select Classification</option>
-                    {elementClassifications.map((data) => (
-                      <option key={data.id} value={data.id}>
-                        {data.name}
-                      </option>
-                    ))}
-                  </select>
-                  {createElementState?.errors.elementClassification && (
+                  />
+                  {createElementState?.errors.reportingName && (
                     <div className={classes.createElement__errors}>
-                      {createElementState?.errors.elementClassification}
+                      {createElementState?.errors.reportingName}
                     </div>
                   )}
                 </div>
-                <div
-                  className={
-                    classes.createElement__info__sectiontwo__payrunholder
-                  }
-                >
-                  <span
-                    className={
-                      classes.createElement__info__sectiontwo__payrunholder__payrun
-                    }
-                  >
-                    Payrun
-                  </span>
-                  <select
-                    className={
-                      classes.createElement__info__sectiontwo__payrunholder__selectpayrun
-                    }
-                    name="payrun"
-                    value={createElementState?.stepOneFormData.payrun}
-                    onChange={handleChange}
-                  >
-                    <option>Select Payrun</option>
-                    {payRuns.map((data) => (
-                      <option key={data.id} value={data.id}>
-                        {data.name}
-                      </option>
-                    ))}
-                  </select>
-                  {createElementState?.errors.payrun && (
-                    <div className={classes.createElement__errors}>
-                      {createElementState?.errors.payrun}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className={classes.createElement__description}>
-              <span className={classes.createElement__description__text}>
-                Description
-              </span>
-              <Textarea
-                classname={classes.createElement__description__textarea}
-                rows={2}
-                placeholder="Input Description"
-                name="description"
-                value={
-                  createElementState !== undefined
-                    ? createElementState?.stepOneFormData.description
-                    : ''
-                }
-                onChange={handleChange}
-              />
-              {createElementState?.errors.description && (
-                <div className={classes.createElement__errors}>
-                  {createElementState?.errors.description}
-                </div>
-              )}
-            </div>
-            <div className={classes.createElement__reporting}>
-              <span className={classes.createElement__reporting__text}>
-                Reporting Name
-              </span>
-              <Textarea
-                classname={classes.createElement__reporting__textarea}
-                rows={2}
-                placeholder="Input Reporting Name"
-                name="reportingName"
-                value={
-                  createElementState !== undefined
-                    ? createElementState?.stepOneFormData.reportingName
-                    : ''
-                }
-                onChange={handleChange}
-              />
-              {createElementState?.errors.reportingName && (
-                <div className={classes.createElement__errors}>
-                  {createElementState?.errors.reportingName}
-                </div>
-              )}
-            </div>
+              </>
+            )}
             <div className={classes.createElement__btnaction}>
               <Button
                 type="reset"

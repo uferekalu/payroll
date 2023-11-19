@@ -20,8 +20,8 @@ const secondStepValues = {
 };
 
 interface CreateElementStateContextType {
-  elementId: number | null
-  setElementId: React.Dispatch<React.SetStateAction<number | null>>
+  elementId: number | null;
+  setElementId: React.Dispatch<React.SetStateAction<number | null>>;
   isCustomModalOpen: boolean;
   setIsCustomModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   createElementLinksDetail: boolean;
@@ -98,7 +98,37 @@ interface CreateElementStateContextType {
     selectedPayMonths: string;
     prorate: string;
   };
+  updateErrors: {
+    name: string;
+    elementCategory: string;
+    elementClassification: string;
+    payrun: string;
+    description: string;
+    reportingName: string;
+    effectiveStartDate: string;
+    effectiveEndDate: string;
+    processingType: string;
+    payFrequency: string;
+    selectedPayMonths: string;
+    prorate: string;
+  };
   setErrors: React.Dispatch<
+    React.SetStateAction<{
+      name: string;
+      elementCategory: string;
+      elementClassification: string;
+      payrun: string;
+      description: string;
+      reportingName: string;
+      effectiveStartDate: string;
+      effectiveEndDate: string;
+      processingType: string;
+      payFrequency: string;
+      selectedPayMonths: string;
+      prorate: string;
+    }>
+  >;
+  setUpdateErrors: React.Dispatch<
     React.SetStateAction<{
       name: string;
       elementCategory: string;
@@ -139,7 +169,7 @@ interface CreateElementProviderProps {
 const CreateElementStateProvider: React.FC<CreateElementProviderProps> = ({
   children,
 }) => {
-  const [elementId, setElementId] = useState<number | null>(null)
+  const [elementId, setElementId] = useState<number | null>(null);
   const [createElement, setCreateElement] = useState<boolean>(false);
   const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
   const [nextStep, setNextStep] = useState<boolean>(false);
@@ -173,6 +203,20 @@ const CreateElementStateProvider: React.FC<CreateElementProviderProps> = ({
   });
 
   const [errors, setErrors] = useState({
+    name: '',
+    elementCategory: '',
+    elementClassification: '',
+    payrun: '',
+    description: '',
+    reportingName: '',
+    effectiveStartDate: '',
+    effectiveEndDate: '',
+    processingType: '',
+    payFrequency: '',
+    selectedPayMonths: '',
+    prorate: '',
+  });
+  const [updateErrors, setUpdateErrors] = useState({
     name: '',
     elementCategory: '',
     elementClassification: '',
@@ -231,7 +275,9 @@ const CreateElementStateProvider: React.FC<CreateElementProviderProps> = ({
         isCustomModalOpen,
         setIsCustomModalOpen,
         elementId,
-        setElementId
+        setElementId,
+        updateErrors,
+        setUpdateErrors,
       }}
     >
       {children}

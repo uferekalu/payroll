@@ -28,6 +28,7 @@ const months = [
 
 interface INextStep {
   setCreateElementSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  editId: number | null
 }
 
 const CreateElementNextStep: React.FC<INextStep> = ({ setCreateElementSuccess }) => {

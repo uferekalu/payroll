@@ -13,9 +13,11 @@ import ElementComp from '../elementComp/ElementComp';
 
 interface INoElement {
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  editId: number | null;
+  setEditId: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-const NoElement: React.FC<INoElement> = ({ setIsEdit }) => {
+const NoElement: React.FC<INoElement> = ({ setIsEdit, editId, setEditId }) => {
   // const [elements] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   const elements = useAppSelector((state: RootState) => state.allElements);
@@ -43,15 +45,19 @@ const NoElement: React.FC<INoElement> = ({ setIsEdit }) => {
           btnText={`Create Element`}
           spanClassName={classes.noelement__searchbar__btnholder__text__span}
           onClick={() => {
-            createElementState?.setCreateElement(true)
-            setIsEdit(false)
+            createElementState?.setCreateElement(true);
+            setIsEdit(false);
           }}
           spanText={'+'}
         />
       </div>
 
       {elements.allElements ? (
-        <ElementComp setIsEdit={setIsEdit} />
+        <ElementComp
+          setIsEdit={setIsEdit}
+          editId={editId}
+          setEditId={setEditId}
+        />
       ) : (
         <div className={classes.noelement__warningContainer}>
           <img
