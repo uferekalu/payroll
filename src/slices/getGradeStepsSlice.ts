@@ -12,6 +12,7 @@ const initialState: GetGradeStepsSice = {
 
 export const getGradeSteps = createAsyncThunk<
   GetGradeStepObject[],
+  number,
   { rejectValue: any }
 >('grades/getGradeSteps', async (id, thunkAPI) => {
   try {

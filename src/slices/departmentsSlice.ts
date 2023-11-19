@@ -12,6 +12,7 @@ const initialState: DepartmentsSlice = {
 
 export const getDepartments = createAsyncThunk<
   DepartmentObject[],
+  number,
   { rejectValue: any }
 >('departments/getDepartments', async (id, thunkAPI) => {
   try {

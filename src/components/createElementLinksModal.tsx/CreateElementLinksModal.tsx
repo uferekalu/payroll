@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classes from './CreateElementLinksModal.module.scss';
 import GeneralModal from '../modal/GeneralModal';
 import { Modal } from 'react-bootstrap';
@@ -6,9 +6,23 @@ import createLink1 from '../../images/createLink1.png';
 import createLink2 from '../../images/createLink2.png';
 import createLink3 from '../../images/createLink3.png';
 import Input from '../input/Input';
-import Select from '../select/Select';
 import Button from '../button/Button';
 import CreateElementModalSecondStep from './CreateElementModalSecondStep';
+import {
+  AllElementLinksObject,
+  DepartmentObject,
+  LookupValueObject,
+  SuborganizationObject,
+} from '../../utils/interface';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { RootState } from '../../store';
+import { allSuborganizations } from '../../slices/getSuborganizationsSlice';
+import { useParams } from 'react-router-dom';
+import { getDepartments } from '../../slices/departmentsSlice';
+import { JobTitle } from './jobTitles';
+import { Locations } from './locations';
+import { EmployeeTypes } from './employeeTypes';
+import { EmployeeCategories } from './employeeCategories';
 
 interface ICreateElementLinks {
   createElementLink: boolean;
@@ -23,8 +37,95 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
   setOpenSuccessModal,
   editElementLinks,
 }) => {
+  const param = useParams();
+  console.log(param.id);
   const [secondStep, setSecondStep] = useState<boolean>(false);
   const [thirdStep, setThirdStep] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const subOrganizations = useAppSelector(
+    (state: RootState) => state.allSuborganizations,
+  );
+  const departments = useAppSelector((state: RootState) => state.departments);
+  const [elementLinksForm, setElementLinksForm] =
+    useState<AllElementLinksObject>({
+      id: null,
+      name: '',
+      elementId: Number(param.id),
+      suborganizationId: null,
+      locationId: null,
+      departmentId: null,
+      employeeCategoryId: null,
+      employeeCategoryValueId: 3,
+      employeeTypeId: null,
+      employeeTypeValueId: 4,
+      jobTitleId: null,
+      grade: null,
+      gradeStep: null,
+      unionId: null,
+      amountType: '',
+      amount: null,
+      rate: null,
+      effectiveStartDate: '',
+      effectiveEndDate: '',
+      status: '',
+      automate: '',
+      additionalInfo: [
+        {
+          lookupId: null,
+          lookupValueId: null,
+        },
+      ],
+    });
+
+  const { jobTitles } = JobTitle();
+  const { locations } = Locations();
+  const { employeeTypes } = EmployeeTypes();
+  const { employeeCategories } = EmployeeCategories();
+
+  console.log('form fata', elementLinksForm);
+  useEffect(() => {
+    dispatch(allSuborganizations());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (elementLinksForm.suborganizationId) {
+      dispatch(getDepartments(elementLinksForm.suborganizationId));
+    }
+  }, [dispatch, elementLinksForm.suborganizationId]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+
+    // If the property is part of additionalInfo array
+    if (name.startsWith('additionalInfo')) {
+      const additionalInfoIndex = Number(name.split('.')[1]); 
+      const updatedAdditionalInfo = Array.isArray(
+        elementLinksForm.additionalInfo,
+      )
+        ? [...elementLinksForm.additionalInfo]
+        : [];
+
+      // Update the specific property in the additionalInfo array
+      updatedAdditionalInfo[additionalInfoIndex] = {
+        ...updatedAdditionalInfo[additionalInfoIndex],
+        [name.split('.')[2]]: value,
+      };
+
+      // Update the state with the modified additionalInfo array
+      setElementLinksForm({
+        ...elementLinksForm,
+        additionalInfo: updatedAdditionalInfo,
+      });
+    } else {
+      // If not part of additionalInfo array, update as usual
+      setElementLinksForm({
+        ...elementLinksForm,
+        [name]: value,
+      });
+    }
+  };
 
   const handleThirdStep = () => {
     setThirdStep(true);
@@ -83,6 +184,9 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
             setThirdStep={setThirdStep}
             setOpenSuccessModal={setOpenSuccessModal}
             setCreateElementLink={setCreateElementLink}
+            elementLinksForm={elementLinksForm}
+            setElementLinksForm={setElementLinksForm}
+            handleChange={handleChange}
           />
         ) : (
           <>
@@ -94,6 +198,9 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
                 type="text"
                 classname={classes.createElementLink__name__input}
                 placeholder="Input Name"
+                name="name"
+                value={elementLinksForm.name}
+                onChange={handleChange}
               />
             </div>
             <div className={classes.createElementLink__subdept}>
@@ -101,21 +208,39 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
                 <span className={classes.createElementLink__subdept__sub__text}>
                   Suborganization
                 </span>
-                <Select
-                  classname={classes.createElementLink__subdept__sub__select}
-                  text="Select a Suborganization"
-                  defaultText="Select a Suborganization"
-                />
+                <select
+                  className={classes.createElementLink__subdept__sub__select}
+                  onChange={handleChange}
+                  name="suborganizationId"
+                  value={String(elementLinksForm.suborganizationId)}
+                >
+                  <option>Select a Suborganization</option>
+                  {subOrganizations &&
+                    subOrganizations.data.map((sub: SuborganizationObject) => (
+                      <option key={sub.id} value={String(sub.id)}>
+                        {sub.name}
+                      </option>
+                    ))}
+                </select>
               </div>
               <div className={classes.createElementLink__subdept__dept}>
                 <span className={classes.createElementLink__subdept__sub__text}>
-                  Suborganization
+                  Department
                 </span>
-                <Select
-                  classname={classes.createElementLink__subdept__sub__select}
-                  text="Select a Suborganization"
-                  defaultText="Select a Suborganization"
-                />
+                <select
+                  className={classes.createElementLink__subdept__sub__select}
+                  onChange={handleChange}
+                  name="departmentId"
+                  value={String(elementLinksForm.departmentId)}
+                >
+                  <option>Select a Department</option>
+                  {departments &&
+                    departments.data.map((dept: DepartmentObject) => (
+                      <option key={dept.id} value={String(dept.id)}>
+                        {dept.name}
+                      </option>
+                    ))}
+                </select>
               </div>
             </div>
             <div className={classes.createElementLink__jobloc}>
@@ -123,21 +248,39 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
                 <span className={classes.createElementLink__jobloc__job__text}>
                   Job Title
                 </span>
-                <Select
-                  classname={classes.createElementLink__jobloc__job__select}
-                  text="Select a Job Title"
-                  defaultText="Select a Job Title"
-                />
+                <select
+                  className={classes.createElementLink__jobloc__job__select}
+                  onChange={handleChange}
+                  name="jobTitleId"
+                  value={String(elementLinksForm.jobTitleId)}
+                >
+                  <option>Select a Job Title</option>
+                  {jobTitles &&
+                    jobTitles.lookupValues.map((job: LookupValueObject) => (
+                      <option key={job.id} value={String(job.id)}>
+                        {job.name}
+                      </option>
+                    ))}
+                </select>
               </div>
               <div className={classes.createElementLink__jobloc__loc}>
                 <span className={classes.createElementLink__jobloc__loc__text}>
                   Location
                 </span>
-                <Select
-                  classname={classes.createElementLink__jobloc__loc__select}
-                  text="Select a Location"
-                  defaultText="Select a Location"
-                />
+                <select
+                  className={classes.createElementLink__jobloc__loc__select}
+                  onChange={handleChange}
+                  name="locationId"
+                  value={String(elementLinksForm.locationId)}
+                >
+                  <option>Select a Location</option>
+                  {locations &&
+                    locations.map((location: LookupValueObject) => (
+                      <option key={location.id} value={String(location.id)}>
+                        {location.name}
+                      </option>
+                    ))}
+                </select>
               </div>
             </div>
             <div className={classes.createElementLink__employeetypecat}>
@@ -149,13 +292,25 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
                 >
                   Employee Type
                 </span>
-                <Select
-                  classname={
+                <select
+                  className={
                     classes.createElementLink__employeetypecat__type__select
                   }
-                  text="Select an employee Type"
-                  defaultText="Select an employee Type"
-                />
+                  onChange={handleChange}
+                  name="employeeTypeId"
+                  value={String(elementLinksForm.employeeTypeId)}
+                >
+                  <option>Select an Employee Type</option>
+                  {employeeTypes &&
+                    employeeTypes.map((employeeType: LookupValueObject) => (
+                      <option
+                        key={employeeType.id}
+                        value={String(employeeType.id)}
+                      >
+                        {employeeType.name}
+                      </option>
+                    ))}
+                </select>
               </div>
               <div className={classes.createElementLink__employeetypecat__cat}>
                 <span
@@ -165,13 +320,27 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
                 >
                   Employee Category
                 </span>
-                <Select
-                  classname={
+                <select
+                  className={
                     classes.createElementLink__employeetypecat__cat__select
                   }
-                  text="Select a Employee Category"
-                  defaultText="Select a Employee Category"
-                />
+                  onChange={handleChange}
+                  name="employeeCategoryId"
+                  value={String(elementLinksForm.employeeCategoryId)}
+                >
+                  <option>Select a Employee Category</option>
+                  {employeeCategories &&
+                    employeeCategories.map(
+                      (employeeCategory: LookupValueObject) => (
+                        <option
+                          key={employeeCategory.id}
+                          value={String(employeeCategory.id)}
+                        >
+                          {employeeCategory.name}
+                        </option>
+                      ),
+                    )}
+                </select>
               </div>
             </div>
             <div className={classes.createElementLink__btnaction}>

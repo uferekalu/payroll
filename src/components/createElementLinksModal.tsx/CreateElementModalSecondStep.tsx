@@ -1,8 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classes from './CreateElementLinksModal.module.scss';
 import Select from '../select/Select';
 import Button from '../button/Button';
 import CreateElementModalThirdStep from './CreateElementModalThirdStep';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { allGrades } from '../../slices/gradesSlice';
+import { RootState } from '../../store';
+import {
+  AllElementLinksObject,
+  GetGradeStepObject,
+  GradeObject,
+  LookupValueObject,
+} from '../../utils/interface';
+import { getGradeSteps } from '../../slices/getGradeStepsSlice';
+import { Union } from './union';
+import { Housing } from './housing';
+import { Wadrobe } from './wadrobe';
+import { Security } from './security';
 
 interface ICreateElementLinkSecond {
   thirdStep: boolean;
@@ -11,6 +25,13 @@ interface ICreateElementLinkSecond {
   setThirdStep: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenSuccessModal: React.Dispatch<React.SetStateAction<boolean>>;
   setCreateElementLink: React.Dispatch<React.SetStateAction<boolean>>;
+  elementLinksForm: AllElementLinksObject;
+  setElementLinksForm: React.Dispatch<
+    React.SetStateAction<AllElementLinksObject>
+  >;
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => void;
 }
 
 const CreateElementModalSecondStep: React.FC<ICreateElementLinkSecond> = ({
@@ -19,9 +40,29 @@ const CreateElementModalSecondStep: React.FC<ICreateElementLinkSecond> = ({
   setSecondStep,
   setThirdStep,
   setOpenSuccessModal,
-  setCreateElementLink
+  setCreateElementLink,
+  elementLinksForm,
+  setElementLinksForm,
+  handleChange,
 }) => {
-  const [additionInfo] = useState<boolean>(true);
+  const [additionInfoDiv, setAdditionalInfoDiv] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const grades = useAppSelector((state: RootState) => state.grades);
+  const gradeSteps = useAppSelector((state: RootState) => state.getGradeSteps);
+  const { unions } = Union();
+  const { housings } = Housing();
+  const { wadrobes } = Wadrobe();
+  const { securities } = Security();
+
+  useEffect(() => {
+    dispatch(allGrades());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (elementLinksForm.grade) {
+      dispatch(getGradeSteps(elementLinksForm.grade));
+    }
+  }, [dispatch, elementLinksForm.grade]);
 
   const backToFirstStep = () => {
     setSecondStep(false);
@@ -50,13 +91,22 @@ const CreateElementModalSecondStep: React.FC<ICreateElementLinkSecond> = ({
               >
                 Grade
               </span>
-              <Select
-                classname={
+              <select
+                className={
                   classes.createElementLink__secondstep__gradestep__grade__select
                 }
-                text="Select a Grade"
-                defaultText="Select a Grade"
-              />
+                onChange={handleChange}
+                name="grade"
+                value={String(elementLinksForm.grade)}
+              >
+                <option>Select a Grade</option>
+                {grades &&
+                  grades.data.map((grade: GradeObject) => (
+                    <option key={grade.id} value={String(grade.id)}>
+                      {grade.name}
+                    </option>
+                  ))}
+              </select>
             </div>
             <div
               className={
@@ -70,13 +120,22 @@ const CreateElementModalSecondStep: React.FC<ICreateElementLinkSecond> = ({
               >
                 Grade Step
               </span>
-              <Select
-                classname={
+              <select
+                className={
                   classes.createElementLink__secondstep__gradestep__gradestep__select
                 }
-                text="Select a Grade Step"
-                defaultText="Select a Grade Step"
-              />
+                onChange={handleChange}
+                name="gradeStep"
+                value={String(elementLinksForm.gradeStep)}
+              >
+                <option>Select a Grade Step</option>
+                {gradeSteps &&
+                  gradeSteps.data.map((step: GetGradeStepObject) => (
+                    <option key={step.id} value={String(step.id)}>
+                      {step.name}
+                    </option>
+                  ))}
+              </select>
             </div>
           </div>
           <div className={classes.createElementLink__secondstep__union}>
@@ -85,14 +144,24 @@ const CreateElementModalSecondStep: React.FC<ICreateElementLinkSecond> = ({
             >
               Union
             </span>
-            <Select
-              classname={classes.createElementLink__secondstep__union__select}
-              text="Select a Union"
-              defaultText="Select a Union"
-            />
+            <select
+              className={classes.createElementLink__secondstep__union__select}
+              onChange={handleChange}
+              name="unionId"
+              value={String(elementLinksForm.unionId)}
+            >
+              <option>Select a Union</option>
+              {unions &&
+                unions.map((union: LookupValueObject) => (
+                  <option key={union.id} value={String(union.id)}>
+                    {union.name}
+                  </option>
+                ))}
+            </select>
           </div>
           <div
             className={classes.createElementLink__secondstep__additionalinfo}
+            onClick={() => setAdditionalInfoDiv(true)}
           >
             <span
               className={
@@ -101,7 +170,7 @@ const CreateElementModalSecondStep: React.FC<ICreateElementLinkSecond> = ({
             >
               Additional Assignment Information
             </span>
-            {additionInfo ? (
+            {additionInfoDiv ? (
               <>
                 <div
                   className={
@@ -118,15 +187,24 @@ const CreateElementModalSecondStep: React.FC<ICreateElementLinkSecond> = ({
                         classes.createElementLink__secondstep__additionalinfo__pensionhouse__pension__text
                       }
                     >
-                      Pension
+                      Housing
                     </span>
-                    <Select
-                      classname={
+                    <select
+                      className={
                         classes.createElementLink__secondstep__additionalinfo__pensionhouse__pension__select
                       }
-                      text="Select Pension"
-                      defaultText="Select Pension"
-                    />
+                      onChange={handleChange}
+                      name="additionalInfo"
+                      value={String(elementLinksForm.additionalInfo)}
+                    >
+                      <option>Select a Housing</option>
+                      {housings &&
+                        housings.map((housing: LookupValueObject) => (
+                          <option key={housing.id} value={String(housing.id)}>
+                            {housing.name}
+                          </option>
+                        ))}
+                    </select>
                   </div>
                   <div
                     className={
@@ -138,15 +216,24 @@ const CreateElementModalSecondStep: React.FC<ICreateElementLinkSecond> = ({
                         classes.createElementLink__secondstep__additionalinfo__pensionhouse__housing__text
                       }
                     >
-                      Housing
+                      Wadrobe
                     </span>
-                    <Select
-                      classname={
+                    <select
+                      className={
                         classes.createElementLink__secondstep__additionalinfo__pensionhouse__housing__select
                       }
-                      text="Select Housing"
-                      defaultText="Select Housing"
-                    />
+                      onChange={handleChange}
+                      name="additionalInfo"
+                      value={String(elementLinksForm.additionalInfo)}
+                    >
+                      <option>Select a wadrobe</option>
+                      {wadrobes &&
+                        wadrobes.map((wadrobe: LookupValueObject) => (
+                          <option key={wadrobe.id} value={String(wadrobe.id)}>
+                            {wadrobe.name}
+                          </option>
+                        ))}
+                    </select>
                   </div>
                 </div>
                 <div
@@ -161,13 +248,22 @@ const CreateElementModalSecondStep: React.FC<ICreateElementLinkSecond> = ({
                   >
                     Loyalty Bonus
                   </span>
-                  <Select
-                    classname={
+                  <select
+                    className={
                       classes.createElementLink__secondstep__additionalinfo__loyaltybonus__select
                     }
-                    text="Select Loyalty Bonus"
-                    defaultText="Select Loyalty Bonus"
-                  />
+                    onChange={handleChange}
+                    name="additionalInfo"
+                    value={String(elementLinksForm.additionalInfo)}
+                  >
+                    <option>Select a Security</option>
+                    {securities &&
+                      securities.map((security: LookupValueObject) => (
+                        <option key={security.id} value={String(security.id)}>
+                          {security.name}
+                        </option>
+                      ))}
+                  </select>
                 </div>
               </>
             ) : (

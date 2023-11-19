@@ -50,32 +50,33 @@ export interface DeleteElementSlice {
 }
 
 export interface AdditionalIfoObject {
-  lookupId: number;
-  lookupValueId: number;
+  lookupId: number | null;
+  lookupValueId: number | null;
 }
 
 export interface AllElementLinksObject {
+  id?: number | null;
   name: string;
-  elementId: number;
-  suborganizationId: number;
-  locationId: number;
-  departmentId: number;
-  employeeCategoryId: number;
-  employeeCategoryValueId: number;
-  employeeTypeId: number;
-  employeeTypeValueId: number;
-  jobTitleId: number;
-  grade: number;
-  gradeStep: number;
-  unionId: number;
+  elementId?: number | null;
+  suborganizationId?: number | null;
+  locationId?: number | null;
+  departmentId?: number | null;
+  employeeCategoryId?: number | null;
+  employeeCategoryValueId?: number | null;
+  employeeTypeId?: number | null;
+  employeeTypeValueId?: number | null;
+  jobTitleId?: number | null;
+  grade?: number | null;
+  gradeStep?: number | null;
+  unionId?: number | null;
   amountType: string;
-  amount: number;
-  rate: number;
-  effectiveStartDate: string;
-  effectiveEndDate: string;
-  status: string;
-  automate: string;
-  additionalInfo: AdditionalIfoObject[];
+  amount: number | null;
+  rate: number | null;
+  effectiveStartDate?: string;
+  effectiveEndDate?: string;
+  status?: string;
+  automate?: string;
+  additionalInfo?: AdditionalIfoObject[];
 }
 
 export interface AllElementLinks {
