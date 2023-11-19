@@ -16,8 +16,7 @@ export const allElements = createAsyncThunk<
 >('element/elements', async (_, thunkAPI) => {
   try {
     const response = await axios.get(`${baseUrl}/elements`);
-    console.log('all elements', response.data);
-    return response.data;
+    return response.data.data.content;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data);
   }

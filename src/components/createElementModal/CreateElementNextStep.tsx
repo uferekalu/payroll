@@ -26,9 +26,11 @@ const months = [
   'Dec',
 ];
 
-interface INextStep {}
+interface INextStep {
+  setCreateElementSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const CreateElementNextStep: React.FC<INextStep> = () => {
+const CreateElementNextStep: React.FC<INextStep> = ({ setCreateElementSuccess }) => {
   const createElementState = useContext(CreateElementStateContext);
   const [isStartDatePickerOpen, setStartDatePickerOpen] =
     useState<boolean>(false);
@@ -41,12 +43,12 @@ const CreateElementNextStep: React.FC<INextStep> = () => {
 
   useEffect(() => {
     if (createdElement.createElementStatus === 'success') {
-      createElementState?.setCreateElementSuccess(true);
+      setCreateElementSuccess(true);
     }
   }, [
     createdElement.createElementStatus,
-    createElementState?.setCreateElementSuccess,
     createElementState,
+    setCreateElementSuccess
   ]);
 
   const handleProrate = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,76 +119,70 @@ const CreateElementNextStep: React.FC<INextStep> = () => {
     setEndDatePickerOpen(!isEndDatePickerOpen);
   };
 
-  const handleCreateAlt = () => {
-    createElementState?.setSuccessModal(true);
-    createElementState?.setCreateElement(false);
-  }
-
   const handleCreateElement = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createElementState?.setSuccessModal(true);
-    // const data = {
-    //   data: {
-    //     name:
-    //       createElementState !== undefined
-    //         ? createElementState?.stepOneFormData.name
-    //         : '',
-    //     description:
-    //       createElementState !== undefined
-    //         ? createElementState?.stepOneFormData.description
-    //         : '',
-    //     payRunId: Number(createElementState?.stepOneFormData.payrun),
-    //     payRunValueId: Number(createElementState?.lookUpValueIds.payRunValueId),
-    //     classificationId: Number(
-    //       createElementState?.stepOneFormData.elementClassification,
-    //     ),
-    //     classificationValueId: Number(
-    //       createElementState?.lookUpValueIds.classificationValueId,
-    //     ),
-    //     categoryId: Number(createElementState?.stepOneFormData.elementCategory),
-    //     categoryValueId: Number(
-    //       createElementState?.lookUpValueIds.categoryValueId,
-    //     ),
-    //     reportingName:
-    //       createElementState !== undefined
-    //         ? createElementState?.stepOneFormData.reportingName
-    //         : '',
-    //     processingType:
-    //       createElementState !== undefined
-    //         ? createElementState?.processingType
-    //         : '',
-    //     status: createElementState?.stepTwoFormData.status
-    //       ? 'Active'
-    //       : 'Inactive',
-    //     prorate:
-    //       createElementState !== undefined ? createElementState?.prorate : '',
-    //     effectiveStartDate:
-    //       createElementState !== undefined
-    //         ? createElementState?.selectedStartDate &&
-    //           createElementState?.selectedStartDate?.toISOString()
-    //         : '',
-    //     effectiveEndDate:
-    //       createElementState !== undefined
-    //         ? createElementState?.selectedEndDate &&
-    //           createElementState?.selectedEndDate?.toISOString()
-    //         : '',
-    //     selectedMonths:
-    //       createElementState !== undefined
-    //         ? createElementState?.selectedMonths
-    //         : [],
-    //     payFrequency:
-    //       createElementState !== undefined
-    //         ? createElementState?.monthlySelectedMonths
-    //         : '',
-    //     modifiedBy: 'Kalu Ufere',
-    //   },
-    // };
-    // await dispatch(createElement(data));
+    const data = {
+      data: {
+        name:
+          createElementState !== undefined
+            ? createElementState?.stepOneFormData.name
+            : '',
+        description:
+          createElementState !== undefined
+            ? createElementState?.stepOneFormData.description
+            : '',
+        payRunId: Number(createElementState?.stepOneFormData.payrun),
+        payRunValueId: Number(createElementState?.lookUpValueIds.payRunValueId),
+        classificationId: Number(
+          createElementState?.stepOneFormData.elementClassification,
+        ),
+        classificationValueId: Number(
+          createElementState?.lookUpValueIds.classificationValueId,
+        ),
+        categoryId: Number(createElementState?.stepOneFormData.elementCategory),
+        categoryValueId: Number(
+          createElementState?.lookUpValueIds.categoryValueId,
+        ),
+        reportingName:
+          createElementState !== undefined
+            ? createElementState?.stepOneFormData.reportingName
+            : '',
+        processingType:
+          createElementState !== undefined
+            ? createElementState?.processingType
+            : '',
+        status: createElementState?.stepTwoFormData.status
+          ? 'Active'
+          : 'Inactive',
+        prorate:
+          createElementState !== undefined ? createElementState?.prorate : '',
+        effectiveStartDate:
+          createElementState !== undefined
+            ? createElementState?.selectedStartDate &&
+              createElementState?.selectedStartDate?.toISOString()
+            : '',
+        effectiveEndDate:
+          createElementState !== undefined
+            ? createElementState?.selectedEndDate &&
+              createElementState?.selectedEndDate?.toISOString()
+            : '',
+        selectedMonths:
+          createElementState !== undefined
+            ? createElementState?.selectedMonths
+            : [],
+        payFrequency:
+          createElementState !== undefined
+            ? createElementState?.monthlySelectedMonths
+            : '',
+        modifiedBy: 'Kalu Ufere',
+      },
+    };
+    await dispatch(createElement(data));
     createElementState?.setCreateElement(false);
   };
 
   return (
-    <>
+    <form onSubmit={handleCreateElement}>
       <div className={classes.createElement__nextstep}>
         <div className={classes.createElement__nextstep__datesection}>
           <div
@@ -647,12 +643,12 @@ const CreateElementNextStep: React.FC<INextStep> = () => {
           <Button
             type="submit"
             btnClassName={classes.createElement__btnaction__next}
-            onClick={() => handleCreateAlt()}
+            onClick={() => {}}
             btnText="Create New Element"
           />
         </div>
       </div>
-    </>
+    </form>
   );
 };
 

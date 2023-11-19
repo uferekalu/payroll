@@ -13,6 +13,7 @@ function App() {
           <Route path="/" element={<Elements />} />
           <Route path="/elements" element={<Elements />} />
           <Route path="/element-links" element={<ElementsLinks />} />
+          <Route path="/element-links/:id" element={<ElementsLinks />} />
         </Routes>
       </Layout>
     </AppStateProvider>

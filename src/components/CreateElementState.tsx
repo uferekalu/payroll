@@ -20,6 +20,8 @@ const secondStepValues = {
 };
 
 interface CreateElementStateContextType {
+  elementId: number | null
+  setElementId: React.Dispatch<React.SetStateAction<number | null>>
   isCustomModalOpen: boolean;
   setIsCustomModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   createElementLinksDetail: boolean;
@@ -137,6 +139,7 @@ interface CreateElementProviderProps {
 const CreateElementStateProvider: React.FC<CreateElementProviderProps> = ({
   children,
 }) => {
+  const [elementId, setElementId] = useState<number | null>(null)
   const [createElement, setCreateElement] = useState<boolean>(false);
   const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
   const [nextStep, setNextStep] = useState<boolean>(false);
@@ -227,6 +230,8 @@ const CreateElementStateProvider: React.FC<CreateElementProviderProps> = ({
         setCreateElementLinkDetail,
         isCustomModalOpen,
         setIsCustomModalOpen,
+        elementId,
+        setElementId
       }}
     >
       {children}

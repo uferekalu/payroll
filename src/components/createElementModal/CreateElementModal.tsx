@@ -15,9 +15,13 @@ import { CreateElementStateContext } from '../CreateElementState';
 
 interface ICreateElement {
   isEdit: boolean;
+  setCreateElementSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreateElementModal: React.FC<ICreateElement> = ({ isEdit }) => {
+const CreateElementModal: React.FC<ICreateElement> = ({
+  isEdit,
+  setCreateElementSuccess,
+}) => {
   const createElementState = useContext(CreateElementStateContext);
   const [elementCategories, setElementCategories] = useState<
     LookupValueObject[]
@@ -88,26 +92,27 @@ const CreateElementModal: React.FC<ICreateElement> = ({ isEdit }) => {
   }, [elementCategories, createElementState?.stepOneFormData.elementCategory]);
 
   useEffect(() => {
-    const fetchLookups = async () => {
-      try {
-        const req1 = axios.get(`${baseUrl}/lookups/1/lookupvalues`);
-        const req2 = axios.get(`${baseUrl}/lookups/2/lookupvalues`);
-        const req3 = axios.get(`${baseUrl}/lookups/5/lookupvalues`);
-
-        const responses = await Promise.all([req1, req2, req3]);
-
-        const elementCat = responses[0].data;
-        const elementClass = responses[1].data;
-        const payrun = responses[2].data;
-
-        setElementCategories(elementCat);
-        setElementClassifications(elementClass);
-        setPayruns(payrun);
-      } catch (error) {
-        console.log(error);
-      }
+    const handleCategories = async () => {
+      const data = await axios.get(`${baseUrl}/lookups/1/lookupvalues`);
+      setElementCategories(data.data);
     };
-    fetchLookups();
+    handleCategories();
+  }, []);
+  
+  useEffect(() => {
+    const handleClassifications = async () => {
+      const data = await axios.get(`${baseUrl}/lookups/2/lookupvalues`);
+      setElementClassifications(data.data);
+    };
+    handleClassifications();
+  }, []);
+ 
+  useEffect(() => {
+    const handlePayruns = async () => {
+      const data = await axios.get(`${baseUrl}/lookups/5/lookupvalues`);
+      setPayruns(data.data);
+    };
+    handlePayruns();
   }, []);
 
   const handleCancelCreateElement = () => {
@@ -236,7 +241,9 @@ const CreateElementModal: React.FC<ICreateElement> = ({ isEdit }) => {
           )}
         </div>
         {createElementState?.nextStep ? (
-          <CreateElementNextStep />
+          <CreateElementNextStep
+            setCreateElementSuccess={setCreateElementSuccess}
+          />
         ) : (
           <>
             <div className={classes.createElement__info}>

@@ -9,8 +9,7 @@ import {
   CreateElementStateContext,
   CreateElementStateProvider,
 } from '../components/CreateElementState';
-import SuccessModal from '../components/successModl/SuccessModal';
-import check from '../images/check.png';
+
 
 interface IElementsLinks {}
 
@@ -58,13 +57,6 @@ const ElementLinks: React.FC<IElementsLinks> = () => {
             <ElementDetail />
           </div>
         </div>
-        <SuccessModal
-          imgSrc={check}
-          alt="Success"
-          onClick={() => createElementState?.setSuccessModal(false)}
-          successMsg={'Element Link has been created successfully'}
-          btnText={'Close to continue'}
-        />
       </CreateElementStateProvider>
     </>
   );

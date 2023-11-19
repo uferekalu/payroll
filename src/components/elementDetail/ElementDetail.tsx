@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import classes from './ElementDetail.module.scss';
 import arrowLeft from '../../images/arrowleft.png';
 import check from '../../images/check.png';
@@ -13,6 +13,11 @@ import CreateElementLinksModal from '../createElementLinksModal.tsx/CreateElemen
 import SuccessModal from '../successModl/SuccessModal';
 import { CreateElementStateContext } from '../CreateElementState';
 import ElementLinksTable from '../elementComp/ElementLinksTable';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getAnElement } from '../../slices/getAnElementSlice';
+import { RootState } from '../../store';
+import { LookupValueObject } from '../../utils/interface';
+import axios from 'axios';
 
 interface IElementDetail {}
 
@@ -21,7 +26,71 @@ const ElementDetail: React.FC<IElementDetail> = () => {
   const [createElementLink, setCreateElementLink] = useState<boolean>(false);
   const createElementState = useContext(CreateElementStateContext);
   const [elementLinksDetail] = useState(true);
-  const [editElementLinks, setIsEditElementLinks] = useState<boolean>(false)
+  const [editElementLinks, setIsEditElementLinks] = useState<boolean>(false);
+  const { id } = useParams();
+  const [category, setCategory] = useState<LookupValueObject | {}>({});
+  const [classification, setClassification] = useState<LookupValueObject | {}>(
+    {},
+  );
+  const [payrun, setPayrun] = useState<LookupValueObject | {}>({});
+  const [openSuccessModal, setOpenSuccessModal] = useState<boolean>(false);
+
+  const closeSuccessModal = () => {
+    setOpenSuccessModal(false);
+  };
+  const dispatch = useAppDispatch();
+  const elementDetail = useAppSelector(
+    (state: RootState) => state.getAnElement,
+  );
+
+  useEffect(() => {
+    if (
+      elementDetail.element.categoryId &&
+      elementDetail.element.categoryValueId
+    ) {
+      const handleCategory = async () => {
+        const data = await axios.get(
+          `https://650af6bedfd73d1fab094cf7.mockapi.io/lookups/${elementDetail.element.categoryId}/lookupvalues/${elementDetail.element.categoryValueId}`,
+        );
+        setCategory(data.data);
+      };
+      handleCategory();
+    }
+  }, [elementDetail.element.categoryId, elementDetail.element.categoryValueId]);
+
+  useEffect(() => {
+    if (
+      elementDetail.element.classificationId &&
+      elementDetail.element.classificationValueId
+    ) {
+      const handleClassification = async () => {
+        const data = await axios.get(
+          `https://650af6bedfd73d1fab094cf7.mockapi.io/lookups/${elementDetail.element.classificationId}/lookupvalues/${elementDetail.element.classificationValueId}`,
+        );
+        setClassification(data.data);
+      };
+      handleClassification();
+    }
+  }, [
+    elementDetail.element.classificationId,
+    elementDetail.element.classificationValueId,
+  ]);
+
+  useEffect(() => {
+    if (elementDetail.element.payRunId && elementDetail.element.payRunValueId) {
+      const handlePayRun = async () => {
+        const data = await axios.get(
+          `https://650af6bedfd73d1fab094cf7.mockapi.io/lookups/${elementDetail.element.payRunId}/lookupvalues/${elementDetail.element.payRunValueId}`,
+        );
+        setPayrun(data.data);
+      };
+      handlePayRun();
+    }
+  }, [elementDetail.element.payRunId, elementDetail.element.payRunValueId]);
+
+  useEffect(() => {
+    dispatch(getAnElement(Number(id)));
+  }, [dispatch, id]);
 
   return (
     <>
@@ -52,7 +121,7 @@ const ElementDetail: React.FC<IElementDetail> = () => {
                     Element Name
                   </span>
                   <span className={classes.elementDetailtable__data}>
-                    13th Month Allowance
+                    {elementDetail.element.name}
                   </span>
                 </span>
               </td>
@@ -62,7 +131,9 @@ const ElementDetail: React.FC<IElementDetail> = () => {
                     Element Classification
                   </span>
                   <span className={classes.elementDetailtable__data}>
-                    Pre-Tax Deduction
+                    {classification &&
+                      'name' in classification &&
+                      classification["name"]}
                   </span>
                 </span>
               </td>
@@ -78,7 +149,7 @@ const ElementDetail: React.FC<IElementDetail> = () => {
                     ELEMENT category
                   </span>
                   <span className={classes.elementDetailtable__data}>
-                    Deductibles
+                    {category && 'name' in category && category?.name}
                   </span>
                 </span>
               </td>
@@ -88,7 +159,7 @@ const ElementDetail: React.FC<IElementDetail> = () => {
                     PayRun
                   </span>
                   <span className={classes.elementDetailtable__data}>
-                    Monthly Run
+                    {payrun && 'name' in payrun && payrun.name}
                   </span>
                 </span>
               </td>
@@ -104,7 +175,7 @@ const ElementDetail: React.FC<IElementDetail> = () => {
                     Effective Start Date
                   </span>
                   <span className={classes.elementDetailtable__data}>
-                    18-09-2023
+                    {elementDetail.element.effectiveStartDate}
                   </span>
                 </span>
               </td>
@@ -114,7 +185,7 @@ const ElementDetail: React.FC<IElementDetail> = () => {
                     Effective End Date
                   </span>
                   <span className={classes.elementDetailtable__data}>
-                    22-09-2023
+                    {elementDetail.element.effectiveEndDate}
                   </span>
                 </span>
               </td>
@@ -129,16 +200,18 @@ const ElementDetail: React.FC<IElementDetail> = () => {
                   <span className={classes.elementDetailtable__heading}>
                     PROCESSING TYPE
                   </span>
-                  <span className={classes.elementDetailtable__data}>Open</span>
+                  <span className={classes.elementDetailtable__data}>
+                    {elementDetail.element.processingType}
+                  </span>
                 </span>
               </td>
               <td>
                 <span className={classes.elementDetailtable}>
                   <span className={classes.elementDetailtable__heading}>
-                    PAY frequency
+                    PAY FREQUENCY
                   </span>
                   <span className={classes.elementDetailtable__data}>
-                    Selected Months
+                    {elementDetail.element.payFrequency}
                   </span>
                 </span>
               </td>
@@ -151,19 +224,32 @@ const ElementDetail: React.FC<IElementDetail> = () => {
               >
                 <span className={classes.elementDetailtable}>
                   <span className={classes.elementDetailtable__heading}>
-                    Pay Months
+                    PAY MONTHS
                   </span>
                   <span className={classes.elementDetailtable__data}>
-                    January, February, March
+                    {elementDetail.element.selectedMonths.map((month, idx) => (
+                      <span
+                        style={{
+                          display: 'flex',
+                          gap: '5px',
+                          fontSize: '11px',
+                        }}
+                        key={idx}
+                      >
+                        {month}
+                      </span>
+                    ))}
                   </span>
                 </span>
               </td>
               <td>
                 <span className={classes.elementDetailtable}>
                   <span className={classes.elementDetailtable__heading}>
-                    Prorate
+                    PRORATE
                   </span>
-                  <span className={classes.elementDetailtable__data}>Yes</span>
+                  <span className={classes.elementDetailtable__data}>
+                    {elementDetail.element.prorate}
+                  </span>
                 </span>
               </td>
             </tr>
@@ -178,7 +264,7 @@ const ElementDetail: React.FC<IElementDetail> = () => {
                     Status
                   </span>
                   <span className={classes.elementDetailtable__data}>
-                    Active
+                    {elementDetail.element.status}
                   </span>
                 </span>
               </td>
@@ -203,9 +289,9 @@ const ElementDetail: React.FC<IElementDetail> = () => {
             spanClassName={
               classes.elementDetail__searchbar__btnholder__text__span
             }
-            onClick={() =>{
-              setCreateElementLink(true)
-              setIsEditElementLinks(false)
+            onClick={() => {
+              setCreateElementLink(true);
+              setIsEditElementLinks(false);
             }}
             spanText={'+'}
           />
@@ -249,11 +335,13 @@ const ElementDetail: React.FC<IElementDetail> = () => {
         editElementLinks={editElementLinks}
       />
       <SuccessModal
+        successModal={openSuccessModal}
+        setSuccessModal={setOpenSuccessModal}
         imgSrc={check}
         alt={'success'}
         successMsg={`Element Link has been created successfully`}
         btnText={'Close to continue'}
-        onClick={() => createElementState?.setSuccessModal(false)}
+        onClick={() => closeSuccessModal()}
       />
     </>
   );

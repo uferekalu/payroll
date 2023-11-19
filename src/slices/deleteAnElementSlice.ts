@@ -11,7 +11,7 @@ const initialState: DeleteElementSlice = {
 
 export const deleteElement = createAsyncThunk<
   string,
-  { id: number },
+  { id: number | null },
   { rejectValue: any }
 >('element/deleteElement', async ({ id }, thunkAPI) => {
   try {

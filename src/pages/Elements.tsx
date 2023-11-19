@@ -19,9 +19,13 @@ const Elements: React.FC<IElement> = () => {
   const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false);
   const createElementState = useContext(CreateElementStateContext);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [createElementSucces, setCreateElementSuccess] =
+    useState<boolean>(false);
   const toggleMobileShowSidebar = () => {
     setShowMobileSidebar((prevState) => !prevState);
   };
+
+  // console.log("create element success", createElementState?.createElementSucces)
   return (
     <>
       <CreateElementStateProvider>
@@ -56,12 +60,17 @@ const Elements: React.FC<IElement> = () => {
             <Breadcrumb />
             <NoElement setIsEdit={setIsEdit} />
           </div>
-          <CreateElementModal isEdit={isEdit} />
+          <CreateElementModal
+            setCreateElementSuccess={setCreateElementSuccess}
+            isEdit={isEdit}
+          />
         </div>
         <SuccessModal
+          successModal={createElementSucces}
+          setSuccessModal={setCreateElementSuccess}
           imgSrc={check}
           alt="Success"
-          onClick={() => createElementState?.setSuccessModal(false)}
+          onClick={() => setCreateElementSuccess(false)}
           successMsg={'Element has been created successfully'}
           btnText={'Close to continue'}
         />

@@ -28,11 +28,12 @@ const initialState: GetAnElementSlice = {
 
 export const getAnElement = createAsyncThunk<
   AllElementsObject,
+  number,
   { rejectValue: any }
 >('element/getAnElement', async (elementId, thunkAPI) => {
   try {
     const response = await axios.get(`${baseUrl}/elements/${elementId}`);
-    return response.data;
+    return response.data.data;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data);
   }

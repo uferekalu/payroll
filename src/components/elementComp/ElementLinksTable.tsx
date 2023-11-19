@@ -8,6 +8,8 @@ import { Table } from 'react-bootstrap';
 import DeleteModalComp from '../deleteModalComp/DeleteModalComp';
 import { CreateElementStateContext } from '../CreateElementState';
 import ElementLinksDetails from '../elementDetail/ElemeentLinksDetail';
+import SuccessModal from '../successModl/SuccessModal';
+import check from '../../images/check.png';
 
 interface IElementsLink {
   createElementLink: boolean;
@@ -300,6 +302,15 @@ const ElementLinksTable: React.FC<IElementsLink> = ({
         onClick2={() => handleSuccessfulRemoval()}
         btnText1="Cancel"
         btnText2="Yes, Delete"
+      />
+      <SuccessModal
+        successModal={successfulRemoval}
+        setSuccessModal={setSuccessfulRemoval}
+        imgSrc={check}
+        alt="Success"
+        onClick={() => createElementState?.setSuccessModal(false)}
+        successMsg={'Element Link has been created successfully'}
+        btnText={'Close to continue'}
       />
       <ElementLinksDetails />
     </>

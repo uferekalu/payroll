@@ -5,7 +5,6 @@ import filterBtn from '../../images/filterbtn.png';
 import Button from '../button/Button';
 import ellipse from '../../images/element-ellipse.png';
 import warning from '../../images/warning.png';
-// import ElementComp from '../elementComp/ElementComp';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { allElements } from '../../slices/getElementsSlice';
 import { RootState } from '../../store';

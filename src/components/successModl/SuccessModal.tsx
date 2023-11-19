@@ -1,11 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import GeneralModal from '../modal/GeneralModal';
 import classes from './SuccessModal.module.scss';
 import Button from '../button/Button';
 import { Modal } from 'react-bootstrap';
-import { CreateElementStateContext } from '../CreateElementState';
 
 interface ISuccessModal {
+  successModal: boolean;
+  setSuccessModal: React.Dispatch<React.SetStateAction<boolean>>;
   imgSrc: string;
   alt: string;
   successMsg: string;
@@ -14,21 +15,20 @@ interface ISuccessModal {
 }
 
 const SuccessModal: React.FC<ISuccessModal> = ({
+  successModal,
+  setSuccessModal,
   imgSrc,
   alt,
   successMsg,
   btnText,
   onClick,
 }) => {
-  const createElementState = useContext(CreateElementStateContext);
   return (
     <GeneralModal
       size="sm"
-      show={
-        createElementState !== undefined && createElementState?.successModal
-      }
+      show={successModal}
       onHide={() => {
-        createElementState?.setSuccessModal(false);
+        setSuccessModal(false);
       }}
       className={classes.successmodal}
     >
@@ -46,7 +46,7 @@ const SuccessModal: React.FC<ISuccessModal> = ({
             type="submit"
             btnClassName={classes.successmodal__body__btnholder__btn}
             btnText={btnText}
-            onClick={() => createElementState?.setSuccessModal(false)}
+            onClick={onClick}
           />
         </div>
       </Modal.Body>
