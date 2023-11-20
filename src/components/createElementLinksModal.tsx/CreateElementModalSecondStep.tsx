@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import classes from './CreateElementLinksModal.module.scss';
-import Select from '../select/Select';
 import Button from '../button/Button';
 import CreateElementModalThirdStep from './CreateElementModalThirdStep';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -32,6 +31,26 @@ interface ICreateElementLinkSecond {
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => void;
+  automate: string;
+  setAutomate: React.Dispatch<React.SetStateAction<string>>;
+  handleSubmitElementLink: (
+    e: React.FormEvent<HTMLFormElement>,
+  ) => Promise<void>;
+  errors: {
+    name: string;
+    amountType: string;
+    amount: string;
+    rate: string;
+  };
+  setErrors: React.Dispatch<
+    React.SetStateAction<{
+      name: string;
+      amountType: string;
+      amount: string;
+      rate: string;
+    }>
+  >;
+  validateStepThreeFormForm: () => boolean
 }
 
 const CreateElementModalSecondStep: React.FC<ICreateElementLinkSecond> = ({
@@ -44,6 +63,10 @@ const CreateElementModalSecondStep: React.FC<ICreateElementLinkSecond> = ({
   elementLinksForm,
   setElementLinksForm,
   handleChange,
+  handleSubmitElementLink,
+  errors,
+  setErrors,
+  validateStepThreeFormForm
 }) => {
   const [additionInfoDiv, setAdditionalInfoDiv] = useState<boolean>(false);
   const dispatch = useAppDispatch();
@@ -75,6 +98,13 @@ const CreateElementModalSecondStep: React.FC<ICreateElementLinkSecond> = ({
           setThirdStep={setThirdStep}
           setOpenSuccessModal={setOpenSuccessModal}
           setCreateElementLink={setCreateElementLink}
+          handleChange={handleChange}
+          elementLinksForm={elementLinksForm}
+          setElementLinksForm={setElementLinksForm}
+          handleSubmitElementLink={handleSubmitElementLink}
+          errors={errors}
+          setErrors={setErrors}
+          validateStepThreeFormForm={validateStepThreeFormForm}
         />
       ) : (
         <div className={classes.createElementLink__secondstep}>

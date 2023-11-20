@@ -23,6 +23,7 @@ import { JobTitle } from './jobTitles';
 import { Locations } from './locations';
 import { EmployeeTypes } from './employeeTypes';
 import { EmployeeCategories } from './employeeCategories';
+import { createElementLinks } from '../../slices/createElementLinkSlice';
 
 interface ICreateElementLinks {
   createElementLink: boolean;
@@ -38,17 +39,27 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
   editElementLinks,
 }) => {
   const param = useParams();
-  console.log(param.id);
   const [secondStep, setSecondStep] = useState<boolean>(false);
   const [thirdStep, setThirdStep] = useState<boolean>(false);
+  const [automate, setAutomate] = useState<string>('');
   const dispatch = useAppDispatch();
   const subOrganizations = useAppSelector(
     (state: RootState) => state.allSuborganizations,
   );
   const departments = useAppSelector((state: RootState) => state.departments);
+  const [errors, setErrors] = useState<{
+    name: string;
+    amountType: string;
+    amount: string;
+    rate: string;
+  }>({
+    name: '',
+    amountType: '',
+    amount: '',
+    rate: '',
+  });
   const [elementLinksForm, setElementLinksForm] =
     useState<AllElementLinksObject>({
-      id: null,
       name: '',
       elementId: Number(param.id),
       suborganizationId: null,
@@ -82,7 +93,6 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
   const { employeeTypes } = EmployeeTypes();
   const { employeeCategories } = EmployeeCategories();
 
-  console.log('form fata', elementLinksForm);
   useEffect(() => {
     dispatch(allSuborganizations());
   }, [dispatch]);
@@ -100,7 +110,7 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
 
     // If the property is part of additionalInfo array
     if (name.startsWith('additionalInfo')) {
-      const additionalInfoIndex = Number(name.split('.')[1]); 
+      const additionalInfoIndex = Number(name.split('.')[1]);
       const updatedAdditionalInfo = Array.isArray(
         elementLinksForm.additionalInfo,
       )
@@ -120,11 +130,112 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
       });
     } else {
       // If not part of additionalInfo array, update as usual
-      setElementLinksForm({
-        ...elementLinksForm,
-        [name]: value,
-      });
+      if (name === 'automate') {
+        setElementLinksForm({
+          ...elementLinksForm,
+          automate: value,
+        });
+      } else {
+        setElementLinksForm({
+          ...elementLinksForm,
+          [name]: value,
+        });
+      }
     }
+  };
+
+  const validateStepOneForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    if (elementLinksForm.name.trim() === '') {
+      newErrors.name = 'Please input name';
+      isValid = false;
+    } else {
+      newErrors.name = '';
+    }
+
+    setErrors((prevState) => {
+      return {
+        ...prevState,
+        ...newErrors,
+      };
+    });
+    return isValid;
+  };
+
+  const validateStepThreeFormForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    if (elementLinksForm.amountType === '') {
+      newErrors.amountType = 'Please select amount type';
+      isValid = false;
+    } else {
+      newErrors.amountType = '';
+    }
+
+    if (elementLinksForm.amountType === 'Fixed Value') {
+      if (elementLinksForm.amount === null) {
+        newErrors.amount = 'Please enter amount';
+        isValid = false;
+      } else {
+        newErrors.amount = '';
+      }
+    }
+
+    if (elementLinksForm.amountType === 'Rate Of Salary') {
+      if (elementLinksForm.rate === null) {
+        newErrors.amount = 'Please enter rate';
+        isValid = false;
+      } else {
+        newErrors.rate = '';
+      }
+    }
+    setErrors((prevState) => {
+      return {
+        ...prevState,
+        ...newErrors,
+      };
+    });
+    return isValid;
+  };
+
+  const handleSubmitElementLink = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ) => {
+    e.preventDefault();
+      const data = {
+        id: Number(elementLinksForm.elementId),
+        data: {
+          name: elementLinksForm.name,
+          elementId: Number(elementLinksForm.elementId),
+          suborganizationId: Number(elementLinksForm.suborganizationId),
+          locationId: Number(elementLinksForm.locationId),
+          departmentId: Number(elementLinksForm.departmentId),
+          employeeCategoryId: Number(elementLinksForm.employeeCategoryId),
+          employeeCategoryValueId: Number(
+            elementLinksForm.employeeCategoryValueId,
+          ),
+          employeeTypeId: Number(elementLinksForm.employeeTypeId),
+          employeeTypeValueId: Number(elementLinksForm.employeeTypeValueId),
+          jobTitleId: Number(elementLinksForm.jobTitleId),
+          grade: Number(elementLinksForm.grade),
+          gradeStep: Number(elementLinksForm.gradeStep),
+          unionId: Number(elementLinksForm.unionId),
+          amountType: elementLinksForm.amountType,
+          amount: Number(elementLinksForm.amount),
+          rate: Number(elementLinksForm.rate),
+          effectiveStartDate: elementLinksForm.effectiveStartDate,
+          effectiveEndDate: elementLinksForm.effectiveEndDate,
+          status: elementLinksForm.status,
+          automate: elementLinksForm.automate,
+          additionalInfo: elementLinksForm.additionalInfo,
+          modifiedBy: 'Kalu Ufere',
+        },
+      };
+      await dispatch(createElementLinks(data));
+      setCreateElementLink(false);
   };
 
   const handleThirdStep = () => {
@@ -132,7 +243,9 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
   };
 
   const handleSecondStep = () => {
-    setSecondStep(true);
+    if (validateStepOneForm()) {
+      setSecondStep(true);
+    }
   };
 
   const handleCancel = () => {
@@ -187,6 +300,12 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
             elementLinksForm={elementLinksForm}
             setElementLinksForm={setElementLinksForm}
             handleChange={handleChange}
+            automate={automate}
+            setAutomate={setAutomate}
+            handleSubmitElementLink={handleSubmitElementLink}
+            errors={errors}
+            setErrors={setErrors}
+            validateStepThreeFormForm={validateStepThreeFormForm}
           />
         ) : (
           <>
@@ -202,6 +321,11 @@ const CreateElementLinksModal: React.FC<ICreateElementLinks> = ({
                 value={elementLinksForm.name}
                 onChange={handleChange}
               />
+              {errors.name && (
+                <span className={classes.createElementLinkerrors}>
+                  {errors.name}
+                </span>
+              )}
             </div>
             <div className={classes.createElementLink__subdept}>
               <div className={classes.createElementLink__subdept__sub}>

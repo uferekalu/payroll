@@ -14,7 +14,7 @@ const initialState: CreateElementLinkSlice = {
 
 interface ICreateElementLinkForm extends AllElementLinksForm {}
 
-export const createElementLink = createAsyncThunk<
+export const createElementLinks = createAsyncThunk<
   string,
   { id: number; data: ICreateElementLinkForm },
   { rejectValue: any }
@@ -55,13 +55,13 @@ const createElementLinkSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(createElementLink.pending, (state, action) => {
+    builder.addCase(createElementLinks.pending, (state, action) => {
       return {
         ...state,
         createElementLinkStatus: 'pending',
       };
     });
-    builder.addCase(createElementLink.fulfilled, (state, action: any) => {
+    builder.addCase(createElementLinks.fulfilled, (state, action: any) => {
       if (action.payload) {
         return {
           ...state,
@@ -72,7 +72,7 @@ const createElementLinkSlice = createSlice({
         return state;
       }
     });
-    builder.addCase(createElementLink.rejected, (state, action: any) => {
+    builder.addCase(createElementLinks.rejected, (state, action: any) => {
       return {
         ...state,
         createElementLinkStatus: 'rejected',

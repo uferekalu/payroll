@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classes from './Elements.module.scss';
 import { AiOutlineClose } from 'react-icons/ai';
 import MobileSidebar from '../components/sidebar/MobileSidebar';
@@ -6,17 +6,30 @@ import Sidebar from '../components/sidebar/Sidebar';
 import Breadcrumb from '../components/breadcrumb/Breadcrumb';
 import ElementDetail from '../components/elementDetail/ElementDetail';
 import {
-  CreateElementStateContext,
   CreateElementStateProvider,
 } from '../components/CreateElementState';
-
+import SuccessModal from '../components/successModl/SuccessModal';
+import check from '../images/check.png';
+import { useAppSelector } from '../store/hooks';
+import { RootState } from '../store';
 
 interface IElementsLinks {}
 
 const ElementLinks: React.FC<IElementsLinks> = () => {
   const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false);
-  const createElementState = useContext(CreateElementStateContext);
+  const [createElementLinkSucces, setCreateElementLinkSuccess] =
+    useState<boolean>(false);
 
+  const createdElementLink = useAppSelector(
+    (state: RootState) => state.createElementLink,
+  );
+
+  useEffect(() => {
+    if (createdElementLink.createElementLinkStatus === "success") {
+      setCreateElementLinkSuccess(true)
+    }
+  }, [createdElementLink.createElementLinkStatus]);
+  
   const toggleMobileShowSidebar = () => {
     setShowMobileSidebar((prevState) => !prevState);
   };
@@ -57,6 +70,15 @@ const ElementLinks: React.FC<IElementsLinks> = () => {
             <ElementDetail />
           </div>
         </div>
+        <SuccessModal
+          successModal={createElementLinkSucces}
+          setSuccessModal={setCreateElementLinkSuccess}
+          imgSrc={check}
+          alt="Success"
+          onClick={() => setCreateElementLinkSuccess(false)}
+          successMsg={'Element Link has been created successfully'}
+          btnText={'Close to continue'}
+        />
       </CreateElementStateProvider>
     </>
   );

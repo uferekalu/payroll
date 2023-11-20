@@ -11,11 +11,12 @@ const initialState: AllElementLinks = {
 
 export const getAllElementLinks = createAsyncThunk<
   AllElementLinksObject[],
+  number,
   { rejectValue: any }
 >('elementlinks/elementLinks', async (id, thunkAPI) => {
   try {
     const response = await axios.get(`${baseUrl}/elements/${id}/elementlinks`);
-    return response.data;
+    return response.data.data.content;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data);
   }

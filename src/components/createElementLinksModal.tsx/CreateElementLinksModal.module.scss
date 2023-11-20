@@ -771,13 +771,13 @@
       &__start {
         display: flex;
         flex-direction: column;
-        
+
         border-radius: $borderRadius;
 
         @media (max-width: 560px) {
           width: 100%;
         }
-  
+
         @media (min-width: 560px) {
           width: 48%;
           margin-top: 10px;
@@ -813,18 +813,18 @@
           margin-right: 10px;
         }
       }
-      
+
       &__end {
         display: flex;
         flex-direction: column;
-        
+
         border-radius: $borderRadius;
 
         @media (max-width: 560px) {
           width: 100%;
           margin-top: 20px;
         }
-  
+
         @media (min-width: 560px) {
           width: 48%;
           margin-top: 10px;
@@ -879,7 +879,7 @@
           color: $textColor;
         }
       }
-      
+
       &__part2 {
         display: flex;
         flex-direction: column;
@@ -903,7 +903,6 @@
             color: $textColor;
             font-size: 12px;
           }
-
         }
       }
       &__automate {
@@ -974,4 +973,16 @@
       }
     }
   }
+}
+
+.createElementLinkerrors {
+  display: flex;
+  background: #fceeee;
+  padding: 9px;
+  border-radius: 4px;
+  font-size: 10px;
+  // font-style: italic;
+  color: red;
+  width: 100%;
+  margin-top: 5px;
 }

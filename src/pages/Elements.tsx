@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import classes from './Elements.module.scss';
 import Sidebar from '../components/sidebar/Sidebar';
 import MobileSidebar from '../components/sidebar/MobileSidebar';
@@ -6,7 +6,6 @@ import { AiOutlineClose } from 'react-icons/ai';
 import NoElement from '../components/noElement/NoElement';
 import Breadcrumb from '../components/breadcrumb/Breadcrumb';
 import {
-  CreateElementStateContext,
   CreateElementStateProvider,
 } from '../components/CreateElementState';
 import CreateElementModal from '../components/createElementModal/CreateElementModal';
@@ -17,11 +16,12 @@ interface IElement {}
 
 const Elements: React.FC<IElement> = () => {
   const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false);
-  const createElementState = useContext(CreateElementStateContext);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editId, setEditId] = useState<number | null>(null);
   const [createElementSucces, setCreateElementSuccess] =
     useState<boolean>(false);
+  
+  
   const toggleMobileShowSidebar = () => {
     setShowMobileSidebar((prevState) => !prevState);
   };
